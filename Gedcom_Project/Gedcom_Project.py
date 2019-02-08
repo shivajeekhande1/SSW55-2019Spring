@@ -1,6 +1,6 @@
 def main():
-  
-    
+    pass
+
 if __name__== "__main__":
   main()
 
@@ -38,8 +38,5 @@ def validity_check():
                     print("-->"+list[0]+"|"+list[2]+"|"+"N"+"|"+list[1]+" ")
         else:
             print("-->"+list[0]+"|"+list[1]+"|"+"N"+"|"+list[2]+" ")
-    
-if __name__== "__main__":
-  main()
 
 
