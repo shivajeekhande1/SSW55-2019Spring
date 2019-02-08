@@ -1,6 +1,6 @@
 def main():
   tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
-  f = open("C:/Users/princ/OneDrive/Documents/stevens/proj02test.ged","r")
+  f = open("https://github.com/shivajeekhande1/SSW55-2019Spring/blob/master/SampleTestFile.ged","r")
   for line in f:
         line = line.replace("\n"," ")
         print("<--"+line)
