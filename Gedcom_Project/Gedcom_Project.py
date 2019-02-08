@@ -1,13 +1,7 @@
 def main():
-  
-    
-if __name__== "__main__":
-  main()
-
-def validity_check():
-    tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
-    f = open("https://github.com/shivajeekhande1/SSW55-2019Spring/blob/master/SampleTestFile.ged","r")
-    for line in f:
+  tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
+  f = open("https://github.com/shivajeekhande1/SSW55-2019Spring/blob/master/SampleTestFile.ged","r")
+  for line in f:
         line = line.replace("\n"," ")
         print("<--"+line)
         list = line.split(" ",2)
@@ -38,5 +32,8 @@ def validity_check():
                     print("-->"+list[0]+"|"+list[2]+"|"+"N"+"|"+list[1]+" ")
         else:
             print("-->"+list[0]+"|"+list[1]+"|"+"N"+"|"+list[2]+" ")
+    
+if __name__== "__main__":
+  main()
 
 
