@@ -5,7 +5,6 @@ def main():
         line = line.replace("\n"," ")
         print("<--"+line)
         list = line.split(" ",2)
-        
         if list[0] == "1":
             if list[1] in tags['1']:
                 try:
