@@ -1,5 +1,5 @@
 from datetime import datetime
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+filepath= "C:/Users/princ/OneDrive/Documents/stevens/proj02test.ged"
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -125,10 +125,53 @@ def Individual_dictionary():
             pass  
 
     return Individual
+
+
+def Family_dictionary():
+    Indi = Individual_dictionary()
+    f = open(filepath,"r")
+    dict = {}
+    status = False
+    date = ""
+    for line in f:
+        line = line.replace("\n","")
+        list = line.split(" ",2)
+        if list[0] == "0" and list[2] == "FAM":
+            curr_id = list[1]
+            dict[curr_id] = {}
+            dict[curr_id]["children"] = []
+            status = True
+        elif list[0] == "0" and list[2] != "FAM":
+            status = False
+        if status:
+            if list[1] == "HUSB":
+                dict[curr_id]["Husb_id"] = list[2]
+                dict[curr_id]["Husb_Name"] = Indi[list[2]]["Name"]
+            elif list[1] == "WIFE":
+                dict[curr_id]["Wife_id"] = list[2]
+                dict[curr_id]["Wife_Name"] = Indi[list[2]]["Name"]
+            elif list[1] == "MARR":
+                date = "Marr"   
+            elif list[1] == "DIV":
+                date = "Div"
+            elif list[1] == "CHIL":
+                dict[curr_id]["children"].append(list[2])
+            if list[1] == "DATE":
+                if date == "Marr":
+                    dict[curr_id]["Marriage_date"] = list[2]
+                    date = ""
+                elif date == "Div":
+                    dict[curr_id]["Divorce_date"] = list[2]
+                    date = ""
+    return dict
+
+
+
+
 def main():
-    z=Individual_dictionary()
+    z=Family_dictionary()
     for key in z:
-        print z[key]
+        print(key,z[key])
 if __name__== "__main__":
   main()
 
