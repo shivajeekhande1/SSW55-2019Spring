@@ -168,10 +168,12 @@ def Family_dictionary():
             pass
     return dict
 
+def printTable():
+    pass
+
 def main():
-    z=Family_dictionary()
-    for key in z:
-        print(key,z[key])
+    printTable()
+    
 if __name__== "__main__":
   main()
 
