@@ -142,7 +142,7 @@ def Family_dictionary():
         if len(list)==2:
                 list[1]=list[1].replace(" ","")
         try:
-            print list
+            
             if list[0] == "0" and list[2] == "FAM":
                 curr_id = list[1]
                 dict[curr_id] = {}
@@ -155,7 +155,7 @@ def Family_dictionary():
             elif list[0] == "0" and list[2] != "FAM":
                 status = False
             if status:
-                print list
+              
                 if list[1] == "HUSB":
                     dict[curr_id]["Husb_id"] = list[2]
                     dict[curr_id]["Husb_Name"] = Indi[list[2]]["Name"]
