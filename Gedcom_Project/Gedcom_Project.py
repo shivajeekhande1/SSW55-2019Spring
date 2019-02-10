@@ -147,6 +147,10 @@ def Family_dictionary():
                 curr_id = list[1]
                 dict[curr_id] = {}
                 dict[curr_id]["children"] = []
+                dict[curr_id]["Marriage_date"]='NA'
+                dict[curr_id]["Divorce_date"]='NA'
+                dict[curr_id]["Wife_Name"]='NA'
+                dict[curr_id]["Husb_Name"]='NA'
                 status = True
             elif list[0] == "0" and list[2] != "FAM":
                 status = False
@@ -181,10 +185,13 @@ def printTable():
     FamDict=Family_dictionary()
 
     for key in IndDict:
-        print key,IndDict[key]
+        print(key,"|",IndDict[key]["Name"],"|",IndDict[key]["Gender"],"|",IndDict[key]["Birthdate"],"|",IndDict[key]["Age"],"|",IndDict[key]["Alive"],"|",IndDict[key]["Death"],"|",IndDict[key]["Child"],"|",IndDict[key]["""Spouse"""])
+        #print(key,IndDict[key])
 
     for key in FamDict:
-        print key,FamDict[key]
+        print(key,FamDict[key]["Marriage_date"],"|",FamDict[key]["Divorce_date"],"|",FamDict[key]['Husb_Name'],"|",FamDict[key]["Husb_id"],"|",FamDict[key]["Wife_Name"],FamDict[key]["Wife_id"],"|",FamDict[key]["children"])
+        #print(key,FamDict[key])
+
 
 def main():
     printTable()
