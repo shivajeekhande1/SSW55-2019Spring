@@ -1,5 +1,5 @@
 from datetime import datetime
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/proj02test.ged"
+filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -136,9 +136,13 @@ def Family_dictionary():
     status = False
     date = ""
     for line in f:
-        line = line.replace("\n","")
-        list = line.split(" ",2)
+        list = line.split()
+        if len(list)>=3:
+                list[2]=' '.join(list[2:len(list)] )
+        if len(list)==2:
+                list[1]=list[1].replace(" ","")
         try:
+            print list
             if list[0] == "0" and list[2] == "FAM":
                 curr_id = list[1]
                 dict[curr_id] = {}
@@ -147,6 +151,7 @@ def Family_dictionary():
             elif list[0] == "0" and list[2] != "FAM":
                 status = False
             if status:
+                print list
                 if list[1] == "HUSB":
                     dict[curr_id]["Husb_id"] = list[2]
                     dict[curr_id]["Husb_Name"] = Indi[list[2]]["Name"]
@@ -174,6 +179,7 @@ def printTable():
   
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
+
     for key in IndDict:
         print key,IndDict[key]
 
