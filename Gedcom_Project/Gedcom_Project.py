@@ -37,6 +37,10 @@ def validity_check():
             print("-->"+list[0]+"|"+list[1]+"|"+"N"+"|"+list[2]+" ")
 
 
+def change_date(date):
+    date=datetime.strptime(date, '%d %b %Y').strftime('%Y-%m-%d')
+    return date
+
 def Individual_dictionary():
     def create_indivudual(id):
         Individual[id]={}
@@ -170,10 +174,10 @@ def Family_dictionary():
                     dict[curr_id]["children"].append(list[2])
                 if list[1] == "DATE":
                     if date == "Marr":
-                        dict[curr_id]["Marriage_date"] = list[2]
+                        dict[curr_id]["Marriage_date"] = change_date(list[2])
                         date = ""
                     elif date == "Div":
-                        dict[curr_id]["Divorce_date"] = list[2]
+                        dict[curr_id]["Divorce_date"] = change_date(list[2])
                         date = ""
         except:
             pass
@@ -184,14 +188,15 @@ def printTable():
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
 
+    sorted(IndDict.items(), key=lambda x:x[0])
+    print ("{:<8} {:<15} {:<10} {:<10} {:<10} {:<15} {:<15} {:<10} {:<15}".format('ID','Name','Gender','Birthday','Age','Alive','Death','Child','Spouse'))
     for key in IndDict:
-        print(key,"|",IndDict[key]["Name"],"|",IndDict[key]["Gender"],"|",IndDict[key]["Birthdate"],"|",IndDict[key]["Age"],"|",IndDict[key]["Alive"],"|",IndDict[key]["Death"],"|",IndDict[key]["Child"],"|",IndDict[key]["""Spouse"""])
-        #print(key,IndDict[key])
-
+        print("{:<8} {:<30} {:<10} {:<10} {:<10} {:<15} {:<15} {:<10} {:<15}".format(key,IndDict[key]["Name"],IndDict[key]["Gender"],IndDict[key]["Birthdate"],IndDict[key]["Age"],IndDict[key]["Alive"],IndDict[key]["Death"],IndDict[key]["Child"],IndDict[key]["Spouse"]))
+    
+    sorted(FamDict.items(), key=lambda x:x[0])
+    print ("{:<8} {:<30} {:<10} {:<10} {:<10} {:<15} {:<15} {:<10} ".format('ID','Married','Divorced','Husband ID','Husband Name','Wife ID','Wife Name','Children'))
     for key in FamDict:
-        print(key,FamDict[key]["Marriage_date"],"|",FamDict[key]["Divorce_date"],"|",FamDict[key]['Husb_Name'],"|",FamDict[key]["Husb_id"],"|",FamDict[key]["Wife_Name"],FamDict[key]["Wife_id"],"|",FamDict[key]["children"])
-        #print(key,FamDict[key])
-
+        print("{:<8} {:<30} {:<10} {:<10} {:<10} {:<15} {:<15} {:<10}".format(key,FamDict[key]["Marriage_date"],FamDict[key]["Divorce_date"],FamDict[key]['Husb_Name'],FamDict[key]["Husb_id"],FamDict[key]["Wife_Name"],FamDict[key]["Wife_id"],FamDict[key]["children"]))
 
 def main():
     printTable()
