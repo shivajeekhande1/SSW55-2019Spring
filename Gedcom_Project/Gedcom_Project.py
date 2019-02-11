@@ -1,5 +1,9 @@
 from datetime import datetime
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+from prettytable import PrettyTable 
+import natsort
+from collections import OrderedDict
+
+filepath= "C:/Users/princ/OneDrive/Documents/stevens/test.txt"
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -170,27 +174,48 @@ def Family_dictionary():
                     dict[curr_id]["children"].append(list[2])
                 if list[1] == "DATE":
                     if date == "Marr":
+                        list[2]=datetime.strptime(list[2], '%d %b %Y').strftime('%Y-%m-%d')
                         dict[curr_id]["Marriage_date"] = list[2]
                         date = ""
                     elif date == "Div":
+                        list[2]=datetime.strptime(list[2], '%d %b %Y').strftime('%Y-%m-%d')
                         dict[curr_id]["Divorce_date"] = list[2]
                         date = ""
         except:
             pass
     return dict
 
+def SortDict(d):
+    keys = natsort.natsorted(d.keys())    
+    d_new = OrderedDict((k, d[k]) for k in keys)    
+    return d_new
+
 def printTable():
   
-    IndDict=Individual_dictionary()
-    FamDict=Family_dictionary()
+    IndDict1=Individual_dictionary()
+    FamDict1=Family_dictionary()
 
+    IndDict = SortDict(IndDict1)
+    FamDict = SortDict(FamDict1)
+
+    x = PrettyTable()
+
+    x.field_names = ["Id","Name","Gender","Birthday","Age","Alive","Death","Child","Spouce"]
+
+    print("Individuals")
     for key in IndDict:
-        print(key,"|",IndDict[key]["Name"],"|",IndDict[key]["Gender"],"|",IndDict[key]["Birthdate"],"|",IndDict[key]["Age"],"|",IndDict[key]["Alive"],"|",IndDict[key]["Death"],"|",IndDict[key]["Child"],"|",IndDict[key]["""Spouse"""])
+        x.add_row([key,IndDict[key]["Name"],IndDict[key]["Gender"],IndDict[key]["Birthdate"],IndDict[key]["Age"],IndDict[key]["Alive"],IndDict[key]["Death"],IndDict[key]["Child"],IndDict[key]["Spouse"]])
         #print(key,IndDict[key])
 
+    print(x)
+
+    y = PrettyTable()
+    y.field_names = ["Id","Married","Divorce","Husband Id","Husband Name","Wife Id","Wife Name","Children"]
+    print("Families")
     for key in FamDict:
-        print(key,FamDict[key]["Marriage_date"],"|",FamDict[key]["Divorce_date"],"|",FamDict[key]['Husb_Name'],"|",FamDict[key]["Husb_id"],"|",FamDict[key]["Wife_Name"],FamDict[key]["Wife_id"],"|",FamDict[key]["children"])
+        y.add_row([key,FamDict[key]["Marriage_date"],FamDict[key]["Divorce_date"],FamDict[key]['Husb_id'],FamDict[key]["Husb_Name"],FamDict[key]["Wife_id"],FamDict[key]["Wife_Name"],FamDict[key]["children"]])
         #print(key,FamDict[key])
+    print(y)
 
 
 def main():
