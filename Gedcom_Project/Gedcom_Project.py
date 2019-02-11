@@ -1,5 +1,5 @@
 from datetime import datetime
-filepath= "C:/Users/princ\OneDrive/Documents/stevens/proj02test.ged"
+filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -85,47 +85,49 @@ def Individual_dictionary():
     Individual={}
     f = open(filepath,"r")
     for line in f:
-        line_words = line.split()
+        try:
+            line_words = line.split()
   
-        if line_words[0]=='1' and line_words[1]=='NAME' and len(line_words)>2:
-	        #print_function('Y',1,line_words)
-            addName( currentIndi,' '.join(line_words[2:len(line_words)]) )
-        elif line_words[0]=='1' and line_words[1]=='BIRT' and len(line_words)==2:
-            current_alive=True
+            if line_words[0]=='1' and line_words[1]=='NAME' and len(line_words)>2:
+	            #print_function('Y',1,line_words)
+                addName( currentIndi,' '.join(line_words[2:len(line_words)]) )
+            elif line_words[0]=='1' and line_words[1]=='BIRT' and len(line_words)==2:
+                current_alive=True
   
-        elif line_words[0]=='1' and line_words[1]=='DEAT' and len(line_words)==2:
-            current_death=False
+            elif line_words[0]=='1' and line_words[1]=='DEAT' and len(line_words)==2:
+                current_death=False
   
-        elif line_words[0]=='2' and line_words[1]=='DATE' and len(line_words)>2:
-            date=datetime.strptime(' '.join(line_words[2:len(line_words)]), '%d %b %Y').strftime('%Y-%m-%d')
-            if current_alive==True:
-                addBirthday( currentIndi, date )
-                current_alive=False
-            if current_death==False:
-                addDeath( currentIndi, date )
-                current_death=True
-        elif line_words[0]=='1' and line_words[1]=='SEX' and len(line_words)==3:
-            addGender(currentIndi, line_words[2])
+            elif line_words[0]=='2' and line_words[1]=='DATE' and len(line_words)>2:
+                date=datetime.strptime(' '.join(line_words[2:len(line_words)]), '%d %b %Y').strftime('%Y-%m-%d')
+                if current_alive==True:
+                    addBirthday( currentIndi, date )
+                    current_alive=False
+                if current_death==False:
+                    addDeath( currentIndi, date )
+                    current_death=True
+            elif line_words[0]=='1' and line_words[1]=='SEX' and len(line_words)==3:
+                addGender(currentIndi, line_words[2])
  
-        elif line_words[0]=='1' and line_words[1]=='FAMC' and len(line_words)==3:
-            addChild(currentIndi,line_words[2])
+            elif line_words[0]=='1' and line_words[1]=='FAMC' and len(line_words)==3:
+                addChild(currentIndi,line_words[2])
 
-        elif line_words[0]=='1' and line_words[1]=='FAMS' and len(line_words)==3:
-            addSpouse(currentIndi,line_words[2])
+            elif line_words[0]=='1' and line_words[1]=='FAMS' and len(line_words)==3:
+                addSpouse(currentIndi,line_words[2])
 
-        elif line_words[0]=="0" and len(line_words)>=3:
-            if line_words[2]=='INDI' :
-		    #print_function('Y',-1,line_words)
-                currentIndi = line_words[1]
-                current_alive=False
-                current_death=True
-                create_indivudual(line_words[1])
-        else:
-	    #print_function('N',line_words[0],line_words) 
-            pass  
+            elif line_words[0]=="0" and len(line_words)>=3:
+                if line_words[2]=='INDI' :
+		        #print_function('Y',-1,line_words)
+                    currentIndi = line_words[1]
+                    current_alive=False
+                    current_death=True
+                    create_indivudual(line_words[1])
+            else:
+	        #print_function('N',line_words[0],line_words) 
+                pass  
+        except:
+            pass
 
     return Individual
-
 
 def Family_dictionary():
     Indi = Individual_dictionary()
@@ -134,17 +136,26 @@ def Family_dictionary():
     status = False
     date = ""
     for line in f:
-        line = line.replace("\n","")
-        list = line.split(" ",2)
+        list = line.split()
+        if len(list)>=3:
+                list[2]=' '.join(list[2:len(list)] )
+        if len(list)==2:
+                list[1]=list[1].replace(" ","")
         try:
+            
             if list[0] == "0" and list[2] == "FAM":
                 curr_id = list[1]
                 dict[curr_id] = {}
                 dict[curr_id]["children"] = []
+                dict[curr_id]["Marriage_date"]='NA'
+                dict[curr_id]["Divorce_date"]='NA'
+                dict[curr_id]["Wife_Name"]='NA'
+                dict[curr_id]["Husb_Name"]='NA'
                 status = True
             elif list[0] == "0" and list[2] != "FAM":
                 status = False
             if status:
+              
                 if list[1] == "HUSB":
                     dict[curr_id]["Husb_id"] = list[2]
                     dict[curr_id]["Husb_Name"] = Indi[list[2]]["Name"]
@@ -168,10 +179,23 @@ def Family_dictionary():
             pass
     return dict
 
+def printTable():
+  
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+
+    for key in IndDict:
+        print(key,"|",IndDict[key]["Name"],"|",IndDict[key]["Gender"],"|",IndDict[key]["Birthdate"],"|",IndDict[key]["Age"],"|",IndDict[key]["Alive"],"|",IndDict[key]["Death"],"|",IndDict[key]["Child"],"|",IndDict[key]["""Spouse"""])
+        #print(key,IndDict[key])
+
+    for key in FamDict:
+        print(key,FamDict[key]["Marriage_date"],"|",FamDict[key]["Divorce_date"],"|",FamDict[key]['Husb_Name'],"|",FamDict[key]["Husb_id"],"|",FamDict[key]["Wife_Name"],FamDict[key]["Wife_id"],"|",FamDict[key]["children"])
+        #print(key,FamDict[key])
+
+
 def main():
-    z=Family_dictionary()
-    for key in z:
-        print(key,z[key])
+    printTable()
+    
 if __name__== "__main__":
   main()
 
