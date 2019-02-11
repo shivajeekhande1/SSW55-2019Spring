@@ -36,21 +36,21 @@
 1 FAMS F04
 0 NOTE define Harika Telaga 
 0 I05 INDI
-0 NAME Harika /Telaga/
+1 NAME Harika /Telaga/
 1 BIRT 
 2 DATE 09 MAR 1949
 1 SEX F
 1 FAMS F02 
 0 NOTE define Madhu Telaga
 0 I06 INDI
-0 NAME Madhu /Telaga/
+1 NAME Madhu /Telaga/
 1 BIRT 
 2 DATE 17 JAN 1975
 1 SEX F
 1 FAMC F02
 0 NOTE define Sirisha Telaga 
 0 I07 INDI
-0 NAME Sirisha /Telaga/
+1 NAME Sirisha /Telaga/
 1 BIRT 
 2 DATE 08 FEB 1977
 1 SEX F
