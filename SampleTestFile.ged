@@ -1,5 +1,4 @@
-0 NOTE Github Repository SSW555-2019Spring
-0 Note Github Link https://github.com/shivajeekhande1/SSW555-2019Spring
+0 NOTE Git Repository Name SSW555-2019Spring
 0 NOTE three generations of Telaga family
 0 NOTE define Avinash Telaga
 0 I01 INDI
@@ -32,7 +31,7 @@
 2 DATE 10 OCT 1948 
 1 SEX F
 1 FAMC F01 
-1 FAMS F03
+1 FAMS A03
 1 FAMS F04
 0 NOTE define Harika Telaga 
 0 I05 INDI
@@ -61,7 +60,7 @@
 1 BIRT 
 2 DATE 11 DEC 1950
 1 SEX M 
-1 FAMS F03
+1 FAMS A03
 1 DEAT
 2 DATE 01 SEP 1980
 0 NOTE define Vyas Rayala
@@ -70,7 +69,7 @@
 1 BIRT 
 2 DATE 19 OCT 1977
 1 SEX M 
-1 FAMC F03
+1 FAMC A03
 0 NOTE define Vamshi Arava
 0 I10 INDI
 1 NAME Vamshi /Arava/
@@ -106,7 +105,7 @@
 1 WIFE I05
 1 CHIL I06 
 1 CHIL I07
-0 F03 FAM 
+0 A03 FAM 
 1 MARR 
 2 DATE 07 AUG 1975
 1 HUSB I08 
