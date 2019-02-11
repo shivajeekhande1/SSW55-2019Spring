@@ -1,5 +1,5 @@
 from datetime import datetime
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/proj02test.ged"
+filepath= "C:/Users/princ\OneDrive/Documents/stevens/proj02test.ged"
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
