@@ -247,7 +247,7 @@ def CheckDivorceBeforeDeath(Famid):
 
 def main():
     printTable()
-    print(CheckDivorceBeforeDeath("F03"))
+    
     
 if __name__== "__main__":
   main()
