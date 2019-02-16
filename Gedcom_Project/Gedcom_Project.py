@@ -219,34 +219,53 @@ def printTable():
         #print(key,FamDict[key])
     print(y)
 
-def CheckMarriageBeforeDivorce(Famid):
+def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
-    if FamDict1[Famid]["Divorce_date"] != "NA":
-        if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
-            return False
+    list = []
+    flag = True
+    error = {}
+    for Famid in FamDict1:
+        if FamDict1[Famid]["Divorce_date"] != "NA":
+            if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
+                list.append(Famid)
+                flag = False
+                error = {"id":"US04","error":"divorce before marriage","Family id":list}
+            else:
+                pass
         else:
-            return True
-    else:
-        return True
+            pass
+    return flag
 
-def CheckDivorceBeforeDeath(Famid):
+
+def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
-    husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
-    Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
-    if FamDict1[Famid]["Divorce_date"] != "NA":
-        if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
-            return False
-        elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
-            return False
-        else:
-            return True
+    flag = True
+    error = {}
+    list = []
+    for Famid in FamDict1:
+        husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
+        Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
+        if FamDict1[Famid]["Divorce_date"] != "NA":
+            if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
+                list.append(Famid)
+                flag = False
+                error = {"id":"US06","error":"divorce before death","Family id":list}
+            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
+                list.append(Famid)
+                flag = False
+                error = {"id":"US06","error":"divorce before death","Family id":list}
+            else:
+                pass
     else:
-        return True
+        pass
+    print(error)
+    return flag
 
 
 def main():
     printTable()
+    print(CheckDivorceBeforeDeath())
     
     
 if __name__== "__main__":
