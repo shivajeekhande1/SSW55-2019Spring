@@ -268,15 +268,14 @@ def CheckDivorceBeforeDeath():
 ## US03 Birth Before Death
 def BirthBeforeDeath(Individuals):
     errorType="US03"
-    errors["US03"]={}
-    errors["US03"]["error"] ="Birth Occurs before death"
-    errors["US03"]["IndividualIds"]=[]
+    error["US03"]={}
+    error["US03"]["error"] ="Birth Occurs before death"
+    error["US03"]["IndividualIds"]=[]
     flag=True
     for individual in Individuals:
         if Individuals[individual]["Death"]< Individuals[individual]["Birthdate"] and Individuals[individual]["Alive"]==False:
             errors["US03"]["IndividualIds"].append(individual)
             flag=False
-    print errors
     return flag
 
 
