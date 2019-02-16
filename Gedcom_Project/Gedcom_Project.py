@@ -2,6 +2,7 @@ from datetime import datetime
 from prettytable import PrettyTable 
 import natsort
 from collections import OrderedDict
+import unittest
 
 filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
 
@@ -218,7 +219,7 @@ def printTable():
         y.add_row([key,FamDict[key]["Marriage_date"],FamDict[key]["Divorce_date"],FamDict[key]['Husb_id'],FamDict[key]["Husb_Name"],FamDict[key]["Wife_id"],FamDict[key]["Wife_Name"],FamDict[key]["children"]])
         #print(key,FamDict[key])
     print(y)
-
+    print(BirthBeforeDeath(IndDict1))
 def CheckMarriageBeforeDivorce(Famid):
     FamDict1 = Family_dictionary()
     if FamDict1[Famid]["Divorce_date"] != "NA":
@@ -244,12 +245,24 @@ def CheckDivorceBeforeDeath(Famid):
     else:
         return True
 
+## US03 Birth Before Death
+def BirthBeforeDeath(Individuals):
+    errorType="US03"
+    errors["US03"]={}
+    errors["US03"]["error"] ="Birth Occurs before death"
+    errors["US03"]["IndividualIds"]=[]
+    flag=True
+    for individual in Individuals:
+        if Individuals[individual]["Death"]< Individuals[individual]["Birthdate"] and Individuals[individual]["Alive"]==False:
+            errors["US03"]["IndividualIds"].append(individual)
+            flag=False
+    print errors
+    return flag
+
 
 def main():
     printTable()
-    
+
     
 if __name__== "__main__":
   main()
-
-
