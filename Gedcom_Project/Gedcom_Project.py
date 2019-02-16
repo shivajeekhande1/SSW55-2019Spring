@@ -261,7 +261,7 @@ def CheckDivorceBeforeDeath():
     else:
         pass
     if flag == False:
-        error.update({"US06",{"error":"divorce before death","Family id":list}})
+        error.update({"US06":{"error":"divorce before death","Family id":list}})
    
     return flag
 
