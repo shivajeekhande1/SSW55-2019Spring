@@ -4,7 +4,8 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+filepath= "C:/Users/princ/OneDrive/Documents/stevens/test.txt"
+error = {}
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -219,31 +220,50 @@ def printTable():
         y.add_row([key,FamDict[key]["Marriage_date"],FamDict[key]["Divorce_date"],FamDict[key]['Husb_id'],FamDict[key]["Husb_Name"],FamDict[key]["Wife_id"],FamDict[key]["Wife_Name"],FamDict[key]["children"]])
         #print(key,FamDict[key])
     print(y)
-    print(BirthBeforeDeath(IndDict1))
-def CheckMarriageBeforeDivorce(Famid):
-    FamDict1 = Family_dictionary()
-    if FamDict1[Famid]["Divorce_date"] != "NA":
-        if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
-            return False
-        else:
-            return True
-    else:
-        return True
 
-def CheckDivorceBeforeDeath(Famid):
+def CheckMarriageBeforeDivorce():
+    FamDict1 = Family_dictionary()
+    list = []
+    flag = True
+    error = {}
+    for Famid in FamDict1:
+        if FamDict1[Famid]["Divorce_date"] != "NA":
+            if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
+                list.append(Famid)
+                flag = False
+            else:
+                pass
+        else:
+            pass
+    if flag == False:
+        error.update({"US04":{"error":"divorce before marriage","Family id":list}})
+    return flag
+
+
+def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
-    husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
-    Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
-    if FamDict1[Famid]["Divorce_date"] != "NA":
-        if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
-            return False
-        elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
-            return False
-        else:
-            return True
+    flag = True
+    
+    list = []
+    for Famid in FamDict1:
+        husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
+        Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
+        if FamDict1[Famid]["Divorce_date"] != "NA":
+            if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
+                list.append(Famid)
+                flag = False
+            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
+                list.append(Famid)
+                flag = False
+            else:
+                pass
     else:
-        return True
+        pass
+    if flag == False:
+        error.update({"US06",{"error":"divorce before death","Family id":list}})
+   
+    return flag
 
 ## US03 Birth Before Death
 def BirthBeforeDeath(Individuals):
@@ -262,7 +282,8 @@ def BirthBeforeDeath(Individuals):
 
 def main():
     printTable()
-
+    print(CheckMarriageBeforeDivorce())
+    
     
 if __name__== "__main__":
   main()
