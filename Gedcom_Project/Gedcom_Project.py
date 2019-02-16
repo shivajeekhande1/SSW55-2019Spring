@@ -4,6 +4,7 @@ import natsort
 from collections import OrderedDict
 
 filepath= "C:/Users/princ/OneDrive/Documents/stevens/test.txt"
+error = {}
 
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -229,11 +230,12 @@ def CheckMarriageBeforeDivorce():
             if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
                 list.append(Famid)
                 flag = False
-                error = {"id":"US04","error":"divorce before marriage","Family id":list}
             else:
                 pass
         else:
             pass
+    if flag == False:
+        error.update({"US04":{"error":"divorce before marriage","Family id":list}})
     return flag
 
 
@@ -241,7 +243,7 @@ def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
     flag = True
-    error = {}
+    
     list = []
     for Famid in FamDict1:
         husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
@@ -250,22 +252,22 @@ def CheckDivorceBeforeDeath():
             if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
                 list.append(Famid)
                 flag = False
-                error = {"id":"US06","error":"divorce before death","Family id":list}
             elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
                 list.append(Famid)
                 flag = False
-                error = {"id":"US06","error":"divorce before death","Family id":list}
             else:
                 pass
     else:
         pass
-    print(error)
+    if flag == False:
+        error.update({"US06",{"error":"divorce before death","Family id":list}})
+   
     return flag
 
 
 def main():
     printTable()
-    print(CheckDivorceBeforeDeath())
+    print(CheckMarriageBeforeDivorce())
     
     
 if __name__== "__main__":
