@@ -190,6 +190,8 @@ def SortDict(d):
     d_new = OrderedDict((k, d[k]) for k in keys)    
     return d_new
 
+
+
 def printTable():
   
     IndDict1=Individual_dictionary()
@@ -217,9 +219,35 @@ def printTable():
         #print(key,FamDict[key])
     print(y)
 
+def CheckMarriageBeforeDivorce(Famid):
+    FamDict1 = Family_dictionary()
+    if FamDict1[Famid]["Divorce_date"] != "NA":
+        if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
+            return False
+        else:
+            return True
+    else:
+        return True
+
+def CheckDivorceBeforeDeath(Famid):
+    IndDict1=Individual_dictionary()
+    FamDict1=Family_dictionary()
+    husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
+    Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
+    if FamDict1[Famid]["Divorce_date"] != "NA":
+        if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
+            return False
+        elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
+            return False
+        else:
+            return True
+    else:
+        return True
+
 
 def main():
     printTable()
+    
     
 if __name__== "__main__":
   main()
