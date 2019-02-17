@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath="C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+filepath= "C:/Users/princ/OneDrive/Documents/stevens/Venkata_Khande_SSE555_project01.txt"
 error = {}
 
 def validity_check():
@@ -132,6 +132,7 @@ def Individual_dictionary():
                 pass  
         except:
             pass
+    f.close()
 
     return Individual
 
@@ -185,6 +186,7 @@ def Family_dictionary():
                         date = ""
         except:
             pass
+    f.close()
     return dict
 
 def SortDict(d):
@@ -221,6 +223,7 @@ def printTable():
         #print(key,FamDict[key])
     print(y)
 
+#user story US04
 def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
     list = []
@@ -239,7 +242,7 @@ def CheckMarriageBeforeDivorce():
         error.update({"US04":{"error":"divorce before marriage","Family id":list}})
     return flag
 
-
+#user story US06
 def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
@@ -266,8 +269,7 @@ def CheckDivorceBeforeDeath():
     return flag
 
 ## US03 Birth Before Death
-def BirthBeforeDeath():
-    Individuals = Individual_dictionary()
+def BirthBeforeDeath(Individuals):
     errorType="US03"
     error["US03"]={}
     error["US03"]["error"] ="Birth Occurs before death"
@@ -275,16 +277,16 @@ def BirthBeforeDeath():
     flag=True
     for individual in Individuals:
         if Individuals[individual]["Death"]< Individuals[individual]["Birthdate"] and Individuals[individual]["Alive"]==False:
-            error["US03"]["IndividualIds"].append(individual)
+            errors["US03"]["IndividualIds"].append(individual)
             flag=False
-    print error
     return flag
 
 
 def main():
     printTable()
-    print(CheckMarriageBeforeDivorce())
-    print(BirthBeforeDeath())
+    
+    
+    
     
 if __name__== "__main__":
   main()

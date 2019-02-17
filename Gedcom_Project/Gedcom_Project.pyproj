@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>e6bd2ec4-879d-4cd5-a003-4052e0b16eb2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>test1.py</StartupFile>
+    <StartupFile>Gedcom_Project.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Gedcom_Project.py" />
-    <Compile Include="test1.py">
+    <Compile Include="US06_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
