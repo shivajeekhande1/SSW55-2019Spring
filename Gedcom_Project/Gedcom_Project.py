@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath= "C:/Users/princ/OneDrive/Documents/stevens/test.txt"
+filepath= "C:/Users/princ/OneDrive/Documents/stevens/Venkata_Khande_SSE555_project01.txt"
 error = {}
 
 def validity_check():
@@ -281,7 +281,7 @@ def BirthBeforeDeath(Individuals):
 
 def main():
     printTable()
-    print(CheckMarriageBeforeDivorce())
+    
     
     
 if __name__== "__main__":
