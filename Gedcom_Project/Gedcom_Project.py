@@ -132,6 +132,7 @@ def Individual_dictionary():
                 pass  
         except:
             pass
+    f.close()
 
     return Individual
 
@@ -185,6 +186,7 @@ def Family_dictionary():
                         date = ""
         except:
             pass
+    f.close()
     return dict
 
 def SortDict(d):
