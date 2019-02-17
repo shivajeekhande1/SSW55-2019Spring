@@ -221,6 +221,7 @@ def printTable():
         #print(key,FamDict[key])
     print(y)
 
+#user story US04
 def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
     list = []
@@ -239,7 +240,7 @@ def CheckMarriageBeforeDivorce():
         error.update({"US04":{"error":"divorce before marriage","Family id":list}})
     return flag
 
-
+#user story US06
 def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
@@ -281,6 +282,7 @@ def BirthBeforeDeath(Individuals):
 
 def main():
     printTable()
+    
     
     
     
