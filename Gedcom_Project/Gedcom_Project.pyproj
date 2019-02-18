@@ -22,7 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Gedcom_Project.py" />
-    <Compile Include="US06_unittesting.py">
+    <Compile Include="US03_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
