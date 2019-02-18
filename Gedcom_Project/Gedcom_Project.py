@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath= "C:/Users/princ/OneDrive/Documents/stevens/Venkata_Khande_SSE555_project01.txt"
+filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
 error = {}
 
 def validity_check():
@@ -269,7 +269,8 @@ def CheckDivorceBeforeDeath():
     return flag
 
 ## US03 Birth Before Death
-def BirthBeforeDeath(Individuals):
+def BirthBeforeDeath():
+    Individuals=Individual_dictionary()
     errorType="US03"
     error["US03"]={}
     error["US03"]["error"] ="Birth Occurs before death"
@@ -277,16 +278,18 @@ def BirthBeforeDeath(Individuals):
     flag=True
     for individual in Individuals:
         if Individuals[individual]["Death"]< Individuals[individual]["Birthdate"] and Individuals[individual]["Alive"]==False:
-            errors["US03"]["IndividualIds"].append(individual)
+            error["US03"]["IndividualIds"].append(individual)
             flag=False
     return flag
 
 
 def main():
     printTable()
+
     
     
     
     
 if __name__== "__main__":
   main()
+
