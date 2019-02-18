@@ -295,6 +295,28 @@ def BirthBeforeDeath():
             flag=False
     return flag
 
+#US-15 Fewer than 15 siblings
+def Checksiblings(): #Checks if the siblings are fewer than 15
+    errorType="US15"
+    error["US15"]={}
+    error["US15"]["error"] ="More than 15 siblings"
+    error["US15"]["Individuals"]=[]
+
+    IndDict=Individual_dictionary()
+    IndDicti=SortDict(IndDict)
+
+    flag=False
+
+    for key in IndDicti:
+        print(len(IndDicti[key]["Child"]))
+        if(len(IndDicti[key]["Child"])<15):
+            flag=True
+            
+        else:
+            errors["US15"]["Individuals"].append(individual)
+            
+    return flag
+
 
 def main():
     printTable()
