@@ -21,7 +21,9 @@ class Test_test1(unittest.TestCase):
     
     def test_E(self):
         Gedcom_Project.filepath = "C:/Users/princ/OneDrive/Documents/stevens/test.txt"
-        error = Gedcom_Project.error["US06"]["Family id"]
+        error= []
+        if Gedcom_Project.CheckDivorceBeforeDeath() == False:
+            error = Gedcom_Project.error["US06"]["Family id"]
         self.assertIn("F03",error)
 
 
