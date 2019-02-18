@@ -3,10 +3,13 @@ from prettytable import PrettyTable
 import natsort
 from collections import OrderedDict
 import unittest
+import base64
+import json
+import requests
+url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+filepath="GedcomFiles/SampleTestFile.ged"
 error = {}
-
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
     f = open(filepath,"r")
@@ -282,14 +285,34 @@ def BirthBeforeDeath():
             flag=False
     return flag
 
+#US-15 Fewer than 15 siblings
+def Checksiblings(): #Checks if the siblings are fewer than 15
+    errorType="US15"
+    error["US15"]={}
+    error["US15"]["error"] ="More than 15 siblings"
+    error["US15"]["Individuals"]=[]
+
+    IndDict=Individual_dictionary()
+    IndDicti=SortDict(IndDict)
+
+    flag=False
+
+    for key in IndDicti:
+        print(len(IndDicti[key]["Child"]))
+        if(len(IndDicti[key]["Child"])<15):
+            flag=True
+            
+        else:
+            errors["US15"]["Individuals"].append(individual)
+            
+    return flag
+
 
 def main():
     printTable()
+    
+    
 
-    
-    
-    
-    
     
 if __name__== "__main__":
   main()
