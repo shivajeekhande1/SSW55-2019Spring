@@ -3,10 +3,23 @@ from prettytable import PrettyTable
 import natsort
 from collections import OrderedDict
 import unittest
+import base64
+import json
+import requests
+url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath= "C:/Users/sunil/Downloads/Sunilkumar_Project#2/SampleTestFile.ged"
+filepath="C:/Users/princ/OneDrive/Documents/stevens/Venkata_Khande_SSE555_project01.txt"
 error = {}
-
+req = requests.get(url)
+f = ""
+try:
+    if req.status_code == requests.codes.ok:
+        req = req.json()
+        req=req['content'].encode()
+        content = base64.decodestring(req).decode("utf-8") 
+        
+except:
+    print('Please Check Internet Connection')
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
     f = open(filepath,"r")
@@ -285,11 +298,10 @@ def BirthBeforeDeath():
 
 def main():
     printTable()
+    
+    for line in content:
+        print(line)
 
-    
-    
-    
-    
     
 if __name__== "__main__":
   main()
