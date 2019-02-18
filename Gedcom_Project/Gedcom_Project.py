@@ -302,7 +302,6 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
         else:
             errors["US15"]["Individuals"].append(individual)
             
-    
     return flag
 
 
