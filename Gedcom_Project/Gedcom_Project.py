@@ -8,7 +8,7 @@ import json
 import requests
 url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath="Venkata_Khande_SSE555_project01.txt"
+filepath="GedcomFiles/SampleTestFile.ged"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
