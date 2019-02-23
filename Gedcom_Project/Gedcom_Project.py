@@ -8,7 +8,7 @@ import json
 import requests
 url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath="GedcomFiles/SampleTestFile.ged"
+filepath="GedcomFiles/SunilUS03TestFile.txt"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -285,6 +285,25 @@ def BirthBeforeDeath():
             flag=False
     return flag
 
+## US05 Marriage before death
+def MarriageBeforeDeath():
+    Individuals=Individual_dictionary()
+    Families=Family_dictionary()
+    errorType="US05"
+    error["US05"]={}
+    error["US05"]["error"] ="Marriage Occurs before death"
+    error["US05"]["IndividualIds"]=[]
+    flag=True
+    for family in Families:
+        if Families[family]["Marriage_date"] > Individuals[Families[family]["Husb_id"]]["Death"]:
+            error["US05"]["IndividualIds"].append(Families[family]["Husb_id"])
+            flag=False
+
+        if Families[family]["Marriage_date"] > Individuals[Families[family]["Wife_id"]]["Death"]:
+            error["US05"]["IndividualIds"].append(Families[family]["Wife_id"])
+            flag=False  
+    return flag
+
 #US-15 Fewer than 15 siblings
 def Checksiblings(): #Checks if the siblings are fewer than 15
     errorType="US15"
@@ -310,9 +329,6 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
 
 def main():
     printTable()
-    
-    
-
     
 if __name__== "__main__":
   main()

@@ -29,8 +29,5 @@ class Test_test1(unittest.TestCase):
         Gedcom_Project.filepath = "GedcomFiles/SunilUS03TestFile.txt"
         self.assertIs(Gedcom_Project.BirthBeforeDeath(),False) #check if the return type is same and value is also same
      
-
-
-
 if __name__ == '__main__':
     unittest.main()
