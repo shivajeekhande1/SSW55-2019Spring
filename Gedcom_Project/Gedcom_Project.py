@@ -326,6 +326,40 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             
     return flag
 
+#US 14 check for less than 5 multiple births in family 
+
+def MultipleBirths(Childlist): #Checks and returns true if there are less than 5 multiple births at a time
+    errorType="US14"
+    error["US14"]= {}
+    error["US14"]["error"]="Checking for less than 5 multiple births at a time"
+    error["US14"]["Individuals"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    flag= False
+    
+    if len(childlist)<5:
+        flag= True
+    
+    if childlist==[]:
+        flag=True
+    
+    else:
+        Nlist=[]
+        count=0
+        for i in len(childlist):
+            ChildBirth= IndDict[childlist[i]]["BIRT"]
+            Nlist.append(ChildBirth)
+            
+        opt=[i for i, x in enumerate(Nlist) if Nlist.count(x) > 1]
+        if len(opt)>5:
+                print("Error: US14",key,"has more than 5 Births :",len(opt) )
+                flag= False
+        else:
+            flag= True
+    
+    return flag
+
+
 
 def main():
     printTable()
