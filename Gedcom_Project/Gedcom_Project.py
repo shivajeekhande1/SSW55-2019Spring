@@ -307,7 +307,7 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             
     return flag
 
-#check for less than 5 multiple births in family 
+#US 14 check for less than 5 multiple births in family 
 
 def MultipleBirths(Childlist): #Checks and returns true if there are less than 5 multiple births at a time
     errorType="US14"
