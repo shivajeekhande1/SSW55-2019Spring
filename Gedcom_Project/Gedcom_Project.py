@@ -357,18 +357,21 @@ def MultipleBirths(Childlist): #Checks and returns true if there are less than 5
 
 
 
-def check_error():
+def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
     BirthBeforeDeath()
     MarriageBeforeDeath()
     Checksiblings()
+
+    
+
     
 
 def main():
     printTable()
-    check_error()
-    print(error)
+    print_error()
+    
     
 if __name__== "__main__":
   main()
