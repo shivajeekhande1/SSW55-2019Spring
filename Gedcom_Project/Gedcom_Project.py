@@ -193,8 +193,6 @@ def SortDict(d):
     d_new = OrderedDict((k, d[k]) for k in keys)    
     return d_new
 
-
-
 def printTable():
   
     IndDict1=Individual_dictionary()
@@ -227,7 +225,9 @@ def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
     list = []
     flag = True
-    
+    error["US04"]={}
+    error["US04"]["error"] ="Death Occurs before divorse"
+    error["US04"]["Family id"]=[]
     for Famid in FamDict1:
         if FamDict1[Famid]["Divorce_date"] != "NA":
             if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
@@ -238,8 +238,7 @@ def CheckMarriageBeforeDivorce():
         else:
             pass
     if flag == False:
-        error.update({"US04":{"error":"divorce before marriage","Family id":list}})
-    
+        error["US04"]["Family id"]=list
     return flag
 
 #user story US06
@@ -248,6 +247,9 @@ def CheckDivorceBeforeDeath():
     FamDict1=Family_dictionary()
     flag = True
     list = []
+    error["US06"]={}
+    error["US06"]["error"] ="Death Occurs before divorse"
+    error["US06"]["Family id"]=[]
     for Famid in FamDict1:
         husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
         Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
@@ -263,7 +265,7 @@ def CheckDivorceBeforeDeath():
     else:
         pass
     if flag == False:
-        error.update({"US06":{"error":"divorce before death","Family id":list}})
+        error["US06"]["Family id"]=list
     return flag
 
 ## US03 Birth Before Death
@@ -322,7 +324,6 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
     return flag
 
 #US 14 check for less than 5 multiple births in family 
-
 def MultipleBirths(Childlist): #Checks and returns true if there are less than 5 multiple births at a time
     errorType="US14"
     error["US14"]= {}
@@ -356,9 +357,18 @@ def MultipleBirths(Childlist): #Checks and returns true if there are less than 5
 
 
 
+def check_error():
+    CheckMarriageBeforeDivorce()
+    CheckDivorceBeforeDeath()
+    BirthBeforeDeath()
+    MarriageBeforeDeath()
+    Checksiblings()
+    
+
 def main():
     printTable()
-    
+    check_error()
+    print(error)
     
 if __name__== "__main__":
   main()
