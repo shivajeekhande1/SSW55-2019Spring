@@ -226,7 +226,7 @@ def CheckMarriageBeforeDivorce():
     list = []
     flag = True
     error["US04"]={}
-    error["US04"]["error"] ="Death Occurs before divorse"
+    error["US04"]["error"] ="Divorse Occurs before Marriage"
     error["US04"]["Family id"]=[]
     for Famid in FamDict1:
         if FamDict1[Famid]["Divorce_date"] != "NA":
