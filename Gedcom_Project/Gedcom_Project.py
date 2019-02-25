@@ -314,7 +314,7 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
     flag=False
 
     for key in IndDicti:
-        print(len(IndDicti[key]["Child"]))
+        
         if(len(IndDicti[key]["Child"])<15):
             flag=True
             
