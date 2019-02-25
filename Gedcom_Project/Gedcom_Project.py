@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath="GedcomFiles/VenkataUS06TestFile.txt"
+filepath="GedcomFiles/AcceptanceTestFile.txt"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -363,15 +363,22 @@ def print_error():
     BirthBeforeDeath()
     MarriageBeforeDeath()
     Checksiblings()
-
-    
-
-    
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    for type in error:
+        if type=="US04":
+            for famID in error[type]['Family id']:
+                print("ERROR: FAMILY: US04: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" before marriage "+str(FamDict[famID]["Marriage_date"]))
+        if type=="US06":
+            for famID in error[type]['Family id']:
+                if IndDict[FamDict[famID]['Husb_id']]['Death']!='NA' and IndDict[FamDict[famID]['Husb_id']]['Death']<FamDict[famID]["Divorce_date"]:
+                    print("ERROR: FAMILY: US06: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" after husband's "+str('(')+str(FamDict[famID]['Husb_id'])+str(')')+" death on "+str(IndDict[FamDict[famID]['Husb_id']]['Death']))
+                if IndDict[FamDict[famID]['Wife_id']]['Death']!='NA' and IndDict[FamDict[famID]['Wife_id']]['Death']<FamDict[famID]["Divorce_date"]:
+                    print("ERROR: FAMILY: US06: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" after wife's "+str('(')+str(FamDict[famID]['Wife_id'])+str(')')+" death on "+str(IndDict[FamDict[famID]['Wife_id']]['Death']))
 
 def main():
     printTable()
-    CheckDivorceBeforeDeath() 
-    print(error)
+    print_error()
     
     
 if __name__== "__main__":
