@@ -22,10 +22,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Gedcom_Project.py" />
+    <Compile Include="US05_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="US03_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="US06_unittesting.py" />
+    <Compile Include="us14_unittesting.py" />
     <Compile Include="us15_unittesting.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

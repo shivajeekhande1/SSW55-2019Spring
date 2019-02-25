@@ -8,7 +8,7 @@ import json
 import requests
 url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath="GedcomFiles/SampleTestFile.ged"
+filepath="GedcomFiles/SunilUS03TestFile.txt"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -283,6 +283,25 @@ def BirthBeforeDeath():
             flag=False
     return flag
 
+## US05 Marriage before death
+def MarriageBeforeDeath():
+    Individuals=Individual_dictionary()
+    Families=Family_dictionary()
+    errorType="US05"
+    error["US05"]={}
+    error["US05"]["error"] ="Marriage Occurs before death"
+    error["US05"]["IndividualIds"]=[]
+    flag=True
+    for family in Families:
+        if Families[family]["Marriage_date"] > Individuals[Families[family]["Husb_id"]]["Death"]:
+            error["US05"]["IndividualIds"].append(Families[family]["Husb_id"])
+            flag=False
+
+        if Families[family]["Marriage_date"] > Individuals[Families[family]["Wife_id"]]["Death"]:
+            error["US05"]["IndividualIds"].append(Families[family]["Wife_id"])
+            flag=False  
+    return flag
+
 #US-15 Fewer than 15 siblings
 def Checksiblings(): #Checks if the siblings are fewer than 15
     errorType="US15"
@@ -305,12 +324,43 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             
     return flag
 
+#US 14 check for less than 5 multiple births in family 
+
+def MultipleBirths(Childlist): #Checks and returns true if there are less than 5 multiple births at a time
+    errorType="US14"
+    error["US14"]= {}
+    error["US14"]["error"]="Checking for less than 5 multiple births at a time"
+    error["US14"]["Individuals"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    flag= False
+    
+    if len(childlist)<5:
+        flag= True
+    
+    if childlist==[]:
+        flag=True
+    
+    else:
+        Nlist=[]
+        count=0
+        for i in len(childlist):
+            ChildBirth= IndDict[childlist[i]]["BIRT"]
+            Nlist.append(ChildBirth)
+            
+        opt=[i for i, x in enumerate(Nlist) if Nlist.count(x) > 1]
+        if len(opt)>5:
+                print("Error: US14",key,"has more than 5 Births :",len(opt) )
+                flag= False
+        else:
+            flag= True
+    
+    return flag
+
+
 
 def main():
     printTable()
-    
-    
-
     
 if __name__== "__main__":
   main()
