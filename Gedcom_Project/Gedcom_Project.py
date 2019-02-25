@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath="GedcomFiles/SampleTestFile.ged"
+filepath="GedcomFiles/SunilUS05TestFile.txt"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
