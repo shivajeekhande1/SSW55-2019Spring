@@ -3,12 +3,8 @@ from prettytable import PrettyTable
 import natsort
 from collections import OrderedDict
 import unittest
-import base64
-import json
-import requests
-url = "https://raw.githubusercontent.com/shivajeekhande1/SSW555-2019Spring/master/SampleTestFile.ged"
 
-filepath="GedcomFiles/SunilUS03TestFile.txt"
+filepath="GedcomFiles/SampleTestFile.ged"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -231,7 +227,7 @@ def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
     list = []
     flag = True
-    error = {}
+    
     for Famid in FamDict1:
         if FamDict1[Famid]["Divorce_date"] != "NA":
             if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
@@ -243,6 +239,7 @@ def CheckMarriageBeforeDivorce():
             pass
     if flag == False:
         error.update({"US04":{"error":"divorce before marriage","Family id":list}})
+    
     return flag
 
 #user story US06
@@ -250,7 +247,6 @@ def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
     flag = True
-    
     list = []
     for Famid in FamDict1:
         husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
@@ -259,7 +255,7 @@ def CheckDivorceBeforeDeath():
             if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
                 list.append(Famid)
                 flag = False
-            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
+            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"] and flag != False:
                 list.append(Famid)
                 flag = False
             else:
@@ -268,7 +264,6 @@ def CheckDivorceBeforeDeath():
         pass
     if flag == False:
         error.update({"US06":{"error":"divorce before death","Family id":list}})
-   
     return flag
 
 ## US03 Birth Before Death
@@ -363,6 +358,7 @@ def MultipleBirths(Childlist): #Checks and returns true if there are less than 5
 
 def main():
     printTable()
+    
     
 if __name__== "__main__":
   main()
