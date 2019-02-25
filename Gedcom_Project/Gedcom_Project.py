@@ -4,7 +4,7 @@ import natsort
 from collections import OrderedDict
 import unittest
 
-filepath="GedcomFiles/SunilUS05TestFile.txt"
+filepath="GedcomFiles/VenkataUS06TestFile.txt"
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -370,7 +370,8 @@ def print_error():
 
 def main():
     printTable()
-    print_error()
+    CheckDivorceBeforeDeath() 
+    print(error)
     
     
 if __name__== "__main__":
