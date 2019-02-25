@@ -250,7 +250,6 @@ def CheckDivorceBeforeDeath():
     IndDict1=Individual_dictionary()
     FamDict1=Family_dictionary()
     flag = True
-    
     list = []
     for Famid in FamDict1:
         husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
@@ -259,7 +258,7 @@ def CheckDivorceBeforeDeath():
             if husbdate != "NA" and husbdate < FamDict1[Famid]["Divorce_date"]:
                 list.append(Famid)
                 flag = False
-            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"]:
+            elif Wifedate != "NA" and Wifedate < FamDict1[Famid]["Divorce_date"] and flag != False:
                 list.append(Famid)
                 flag = False
             else:
@@ -268,7 +267,6 @@ def CheckDivorceBeforeDeath():
         pass
     if flag == False:
         error.update({"US06":{"error":"divorce before death","Family id":list}})
-   
     return flag
 
 ## US03 Birth Before Death
