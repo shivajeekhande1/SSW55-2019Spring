@@ -6,20 +6,20 @@ import Gedcom_Project
 class Testus14(unittest.TestCase):
 
     def test1(self):
-        Gedcom_Project.filepath="C:/Users/eshwa/OneDrive/Desktop/CS 555/Gedcom Project/SSW555-2019Spring/SampelTest.ged"
-        self.assertEqual(Gedcom_Project.MultipleBirths(),True)
+        Gedcom_Project.filepath="GedcomFiles/SampleTestFile.ged"
+        self.assertEqual(Gedcom_Project.CheckMultipleBirths(),True)
 
     def test2(self):
-        Gedcom_Project.filepath= "C:/Users/eshwa/OneDrive/Desktop/CS 555/Gedcom Project/SSW555-2019Spring/SampelTest.ged"
-        self.assertNotEqual(Gedcom_Project.MultipleBirths(),False)
+        Gedcom_Project.filepath= "GedcomFiles/SampleTestFile.ged"
+        self.assertNotEqual(Gedcom_Project.CheckMultipleBirths(),False)
 
     def test3(self):
-        Gedcom_Project.filepath="C:/Users/eshwa/OneDrive/Desktop/CS 555/Gedcom Project/SSW555-2019Spring/SampelTest.ged"
-        self.assertTrue(Gedcom_Project.MultipleBirths())
+        Gedcom_Project.filepath="GedcomFiles/SampleTestFile.ged"
+        self.assertTrue(Gedcom_Project.CheckMultipleBirths())
 
     def test4(self):
-        Gedcom_Project.filepath="https://docs.google.com/spreadsheets/d/1h9KaWW9lpaZqIrkSKBShNbtcgByDbyBERYt_EOtWgTg/edit?ts=5c719b71#gid=348873167"
-        self.assertIsNotNone(Gedcom_Project.MultipleBirths())
+        Gedcom_Project.filepath="GedcomFiles/SampleTestFile.ged"
+        self.assertIsNotNone(Gedcom_Project.CheckMultipleBirths())
 
 if __name__ == "__main__":
     unittest.main

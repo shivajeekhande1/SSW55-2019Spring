@@ -308,18 +308,18 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
     error["US15"]["error"] ="More than 15 siblings"
     error["US15"]["Individuals"]=[]
 
-    IndDict=Individual_dictionary()
+    IndDict=Family_dictionary()
     IndDicti=SortDict(IndDict)
 
     flag=False
 
     for key in IndDicti:
         
-        if(len(IndDicti[key]["Child"])<15):
+        if(len(IndDicti[key]["children"])<15):
             flag=True
             
         else:
-            errors["US15"]["Individuals"].append(individual)
+            error["US15"]["Individuals"].append(individual)
             
     return flag
 
@@ -382,6 +382,7 @@ def print_error():
 
 def main():
     printTable()
+    print(Checksiblings())
     print_error()
     
     
