@@ -23,7 +23,7 @@ class Test_test1(unittest.TestCase):
         Gedcom_Project.filepath = "GedcomFiles/SunilUS05TestFile.txt"
         Gedcom_Project.MarriageBeforeDeath()
         errorDict = Gedcom_Project.error["US05"]["IndividualIds"]
-        self.assertIn("I08",errorDict) #check if Individual I01 in the error dictionary
+        self.assertIn("I08",errorDict[1]) #check if Individual I08 in the error dictionary
     
     def test_Five(self):
         Gedcom_Project.filepath = "GedcomFiles/SunilUS05TestFile.txt"

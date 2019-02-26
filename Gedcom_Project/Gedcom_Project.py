@@ -293,11 +293,11 @@ def MarriageBeforeDeath():
     flag=True
     for family in Families:
         if Families[family]["Marriage_date"] > Individuals[Families[family]["Husb_id"]]["Death"]:
-            error["US05"]["IndividualIds"].append(Families[family]["Husb_id"])
+            error["US05"]["IndividualIds"].append([Families[family]["Husb_id"],family,"husband's"])
             flag=False
 
         if Families[family]["Marriage_date"] > Individuals[Families[family]["Wife_id"]]["Death"]:
-            error["US05"]["IndividualIds"].append(Families[family]["Wife_id"])
+            error["US05"]["IndividualIds"].append([Families[family]["Wife_id"],family,"wife's"])
             flag=False  
     return flag
 
@@ -375,6 +375,15 @@ def print_error():
                     print("ERROR: FAMILY: US06: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" after husband's "+str('(')+str(FamDict[famID]['Husb_id'])+str(')')+" death on "+str(IndDict[FamDict[famID]['Husb_id']]['Death']))
                 if IndDict[FamDict[famID]['Wife_id']]['Death']!='NA' and IndDict[FamDict[famID]['Wife_id']]['Death']<FamDict[famID]["Divorce_date"]:
                     print("ERROR: FAMILY: US06: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" after wife's "+str('(')+str(FamDict[famID]['Wife_id'])+str(')')+" death on "+str(IndDict[FamDict[famID]['Wife_id']]['Death']))
+
+        if type=="US03":
+            
+          for indID in error[type]["IndividualIds"]:
+                print("ERROR: INDIVIDUAL: US03: "+str(indID)+" : Died "+str(IndDict[indID]["Death"])+" before born "+str(IndDict[indID]["Birthdate"]))
+       
+        if type=="US05":     
+            for indID in error[type]["IndividualIds"]:
+                print("ERROR: FAMILY: US05: "+str(indID[1])+": Married "+str(FamDict[indID[1]]["Marriage_date"])+" after "+str(indID[2])+" ("+str(indID[0])+")"+" death on "+str(IndDict[indID[0]]["Death"]))
 
 def main():
     printTable()
