@@ -380,7 +380,7 @@ def print_error():
 
 def main():
     printTable()
-    print(Checksiblings())
+    
     print_error()
     
     
