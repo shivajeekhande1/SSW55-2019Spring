@@ -323,6 +323,7 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             
     return flag
 
+
 #US 14 check for less than 5 multiple births in family 
 def CheckMultipleBirths():
     errorType="US14"
@@ -331,21 +332,18 @@ def CheckMultipleBirths():
     error["US14"]["Individuals"]=[]
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
-    flag= False
+    flag= True
     
     for key in FamDict:
-        if len(FamDict[key]["children"])<5:
-            flag=True
         if len(FamDict[key]["children"])>=5:
-            newlist=[]
-            for k in FamDict[key]['children']:
-                childsBirth= IndDict[key]["Birthdate"]
-                newlist.append(IndDict[key]["Birthdate"])
-                opt=[i for i, x in enumerate(newlist) if newlist.count(x) > 1]
-        
-                if len(opt) >=5:
-                    error["US14"]["Individuals"].append(individual)
-                    flag=False
+            newlist=list()
+            for child in FamDict[key]['children']:
+                newlist.append(IndDict[child]["Birthdate"])
+            count_dict = dict((i, newlist.count(i)) for i in newlist)
+            list_birthdays = count_dict.values()
+            if max(list_birthdays) >=5:
+                flag = False
+            
     return flag
      
         
