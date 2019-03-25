@@ -586,7 +586,6 @@ def main():
     printTable()
     
     print_error()
-    print(error)
     
 
 
