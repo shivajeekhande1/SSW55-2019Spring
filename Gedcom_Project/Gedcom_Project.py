@@ -405,10 +405,10 @@ def NoMarriageChildren():
         for childID in childList:
             for key in FamDict:
                if FamDict[key]["Wife_id"]==FamDict[famID]["Wife_id"] and FamDict[key]["Husb_id"]==childID:
-                   error["US17"]["Family"][childID]="Husband is decendant of Spouse "+str(FamDict[famID]["Wife_id"])
+                   error["US17"]["Family"][childID]=" in family "+str(key)+" is a husband and is decendant of Spouse "+str(FamDict[famID]["Wife_id"])
                    flag=False
                if FamDict[key]["Husb_id"]==FamDict[famID]["Husb_id"] and FamDict[key]["Wife_id"]==childID:
-                   error["US17"]["Family"][childID]="Wife is decendant of Spouse "+str(FamDict[famID]["Husb_id"])
+                   error["US17"]["Family"][childID]=" in family "+str(key)+" is a wife and is decendant of Spouse "+str(FamDict[famID]["Husb_id"])
                    flag=False
     return flag
 
@@ -465,9 +465,9 @@ def SpousesList(grandchildID,FamDict):
     tempList=list([])
     for famID in FamDict:
         if grandchildID==FamDict[famID]["Husb_id"]:
-            tempList.append(FamDict[famID]["Wife_id"])
+            tempList.append([FamDict[famID]["Wife_id"],famID])
         if grandchildID==FamDict[famID]["Wife_id"]:
-            tempList.append(FamDict[famID]["Husb_id"])
+            tempList.append([FamDict[famID]["Husb_id"],famID])
 
     return tempList
 
@@ -476,9 +476,9 @@ def findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,
         for otherParent in childList:
             if otherParent!=childID:
                 otherParentChildren=getchildList(otherParent,FamDict)
-                if grandchildspouse in otherParentChildren and grandchildspouse not in temp_list:
-                    error["US19"]["Family"].append(str(famID)+" Cannot marry between first cousins: " + str(grandchildspouse) + "," + str(grandchildID))
-                    temp_list.append(grandchildspouse)
+                if grandchildspouse[0] in otherParentChildren and grandchildspouse[0] not in temp_list:
+                    error["US19"]["Family"].append("The Family "+str(grandchildspouse[1])+" have marriage between first cousins: " + str(grandchildspouse[0]) + "," + str(grandchildID)+" Since their corresponding parents "+"["+str(otherParent)+","+str(childID)+"]"+" are from same family")
+                    temp_list.append(grandchildspouse[0])
                     temp_list.append(grandchildID)
     return temp_list 
 
@@ -499,7 +499,7 @@ def FirstCousinsNoMarriageChildren():
                     grandChildrenSpouses=SpousesList(grandchildID,FamDict)
                     if len(grandChildrenSpouses)!=0 and grandchildID not in temp_list:
                         temp_list=findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,FamDict,famID) 
-    return False if len(error["US19"]["Family"])==0 else True
+    return True if len(error["US19"]["Family"])==0 else False
 
 
 def print_error():
@@ -572,13 +572,20 @@ def print_error():
                 if len(list1)>0:
                     print("ERROR: Family: US08: Childrens with id's "+str(list1)+" In family "+i+" have birth before marriage of parents")
 
-
+        if type=="US17":
+            list=error[type]["Family"]
+            for chID in list:
+                print("ERROR: Family: US17: Children with id "+str(chID)+list[chID])
             
+
+        if type=="US19":
+            for us19 in error[type]["Family"]:
+                print("ERROR: Family: US19: "+us19)
+
 def main():
     printTable()
     
     print_error()
-    print(error)
     
 
 

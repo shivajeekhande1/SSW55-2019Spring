@@ -19,5 +19,5 @@ class Testus07(unittest.TestCase):
         Gedcom_Project.filepath= "GedcomFiles/SampleTestFile.ged"
         self.assertNotEqual(Gedcom_Project.max_age(),False)
 
-if if __name__ == "__main__":
+if __name__ == "__main__":
     unittest.main()
