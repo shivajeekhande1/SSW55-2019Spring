@@ -21,11 +21,17 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Gedcom_Project.py" />
-    <Compile Include="US04_unittesting.py">
+    <Compile Include="CombinedTesting.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gedcom_Project.py" />
     <Compile Include="US05_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="US19_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="US04_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="US03_unittesting.py">
