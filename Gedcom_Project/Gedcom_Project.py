@@ -322,7 +322,7 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             flag=True
             
         else:
-            error["US15"]["IndividualIds"].append(individual)
+            error["US15"]["Individuals"].append(key)
             
     return flag
 
@@ -344,9 +344,54 @@ def CheckMultipleBirths():
             count_dict = dict((i, newlist.count(i)) for i in newlist)
             list_birthdays = count_dict.values()
             if max(list_birthdays) >=5:
+                error["US14"]["FamilyID"].append(key)
                 flag = False
             
     return flag
+
+#US07 Individuals age should not exceed 150 
+def max_age(): #Checks if the individuals age are not more than 150
+    errorType="US07"
+    error["US07"]={}
+    error["US07"]["error"] ="Less than 150 years of Age"
+    error["US07"]["Individuals"]=[]
+    IndDict=Individual_dictionary()
+    
+    flag=True
+    MaxAge=150
+    for key in IndDict:
+        if(IndDict[key]['Age']>MaxAge):
+            error["US07"]["Individuals"].append(key)
+            flag=False
+    return flag
+
+#US18 Check  if the siblings are married
+def checkSiblingsmarried():
+    errorType="US18"
+    error["US18"]={}
+    error["US18"]["error"] ="Siblings are married"
+    error["US18"]["FamilyIds"]=[]
+    flag=True    
+    
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    for key in FamDict:
+        if(len(FamDict[key]['children'])>1):
+            childrens=list(FamDict[key]['children'])
+            for i in FamDict:
+                if FamDict[i]["Husb_id"] in childrens and FamDict[i]["Wife_id"] in childrens:
+                    error["US18"]["FamilyIds"].append(key)
+                    flag= False 
+                
+                    
+    return flag
+
+
+
+
+        
+
+
 
 
 #us08
@@ -392,6 +437,11 @@ def print_error():
     BirthBeforeDeath()
     MarriageBeforeDeath()
     Checksiblings()
+    CheckMultipleBirths()
+    max_age()
+    checkSiblingsmarried()
+    
+    
     BirthBeforeMarriageOfParents()
     AllMaleNames()
     IndDict=Individual_dictionary()
@@ -415,6 +465,23 @@ def print_error():
         if type=="US05":     
             for indID in error[type]["IndividualIds"]:
                 print("ERROR: FAMILY: US05: "+str(indID[1])+": Married "+str(FamDict[indID[1]]["Marriage_date"])+" after "+str(indID[2])+" ("+str(indID[0])+")"+" death on "+str(IndDict[indID[0]]["Death"]))
+
+        if type=="US14":
+            for famID in error[type]['FamilyID']:
+                print("ERROR: FAMILY: US14:"+str(famID)+ ":has more than 5 multiple births at a time!")
+                
+        if type=="US15":
+            for indID in error[type]['Individuals']:
+                print("ERROR: FAMILY: US15"+str(indID)+"has more than 15 children in their family")
+                
+        if type=="US07":
+            for indID in error[type]['Individuals']:
+                print("ERROR: FAMILY: US07- This individual "+str(indID)+" has an age that exceeds 150 years ")
+        
+        if type=="US18":
+            for Famid in error[type]['FamilyIds']:
+                print("ERRO: FAMILY: US18- This family "+str(Famid)+"is married to their sibling!")
+            
         
         if type == "US16":
             for i in error[type]["Family id"]:
