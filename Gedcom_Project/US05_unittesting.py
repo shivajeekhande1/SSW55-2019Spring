@@ -1,7 +1,7 @@
 import unittest
 import Gedcom_Project
 
-class Test_test1(unittest.TestCase):
+class TestUS05_test1(unittest.TestCase):
     
     def test_A(self):
         Gedcom_Project.filepath = "GedcomFiles/SunilUS05TestFile.txt"
