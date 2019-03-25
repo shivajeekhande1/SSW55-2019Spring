@@ -301,6 +301,7 @@ def MarriageBeforeDeath():
     Families=Family_dictionary()
     
     errorlog("US05","Marriage Occurs before death","Indi")
+    getId={"Husb_id":"husband's","Wife_id":"wife's"}
     
     flag=True
     for family in Families:
@@ -392,8 +393,9 @@ def checkSiblingsmarried():
 #US 17 No Marriages to children
 def NoMarriageChildren():
     error["US17"]= {}
-    error["US17"]["error"]="Parents should not marry any of their children"
+    error["US17"]["error"]="No Marriages to children"
     error["US17"]["Family"]={}
+    
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     flag= True
@@ -481,6 +483,7 @@ def findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,
     return temp_list 
 
 def FirstCousinsNoMarriageChildren():
+    
     error["US19"]= {}
     error["US19"]["error"]="First cousins should not marry one another"
     error["US19"]["Family"]=[]
@@ -514,7 +517,6 @@ def print_error():
     AllMaleNames()
     NoMarriageChildren()
     FirstCousinsNoMarriageChildren()
-    print(error)
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
@@ -576,6 +578,7 @@ def main():
     printTable()
     
     print_error()
+    print(error)
     
 
 
