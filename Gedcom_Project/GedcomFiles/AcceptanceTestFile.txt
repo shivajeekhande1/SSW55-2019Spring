@@ -19,9 +19,9 @@
 2 DATE 13 JUN 2005
 0 NOTE define Bhanu Telaga
 0 I03 INDI 
-1 NAME Pavan /Telaga/ 
+1 NAME Pavan /Telaga1/ 
 1 BIRT 
-2 DATE 23 May 1947 
+2 DATE 23 May 1943
 1 SEX M 
 1 FAMS F02
 1 FAMC F01

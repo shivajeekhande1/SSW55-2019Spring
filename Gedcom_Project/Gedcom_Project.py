@@ -220,14 +220,21 @@ def printTable():
         #print(key,FamDict[key])
     print(y)
 
+def errorlog(key, error_desc, id_type):
+    error[key]={}
+    error[key]["error"] = error_desc
+    if id_type == "Fam":
+        error[key]["Family id"] = []
+    else:
+        error[key]["IndividualIds"] = []
+
 #user story US04
 def CheckMarriageBeforeDivorce():
     FamDict1 = Family_dictionary()
     list = []
     flag = True
-    error["US04"]={}
-    error["US04"]["error"] ="Divorse Occurs before Marriage"
-    error["US04"]["Family id"]=[]
+    errorlog("US04","Divorse Occurs before Marriage","Fam")
+    
     for Famid in FamDict1:
         if FamDict1[Famid]["Divorce_date"] != "NA":
             if FamDict1[Famid]["Divorce_date"] < FamDict1[Famid]["Marriage_date"]:
@@ -247,9 +254,8 @@ def CheckDivorceBeforeDeath():
     FamDict1=Family_dictionary()
     flag = True
     list = []
-    error["US06"]={}
-    error["US06"]["error"] ="Death Occurs before divorse"
-    error["US06"]["Family id"]=[]
+    errorlog("US06","Death Occurs before divorse","Fam")
+    
     for Famid in FamDict1:
         husbdate = IndDict1[FamDict1[Famid]["Husb_id"]]["Death"]
         Wifedate = IndDict1[FamDict1[Famid]["Wife_id"]]["Death"]
@@ -271,10 +277,9 @@ def CheckDivorceBeforeDeath():
 ## US03 Birth Before Death
 def BirthBeforeDeath():
     Individuals=Individual_dictionary()
-    errorType="US03"
-    error["US03"]={}
-    error["US03"]["error"] ="Birth Occurs before death"
-    error["US03"]["IndividualIds"]=[]
+    
+    errorlog("US03","Birth Occurs before death","Indi")
+    
     flag=True
     for individual in Individuals:
         if Individuals[individual]["Death"]< Individuals[individual]["Birthdate"] and Individuals[individual]["Alive"]==False:
@@ -286,10 +291,9 @@ def BirthBeforeDeath():
 def MarriageBeforeDeath():
     Individuals=Individual_dictionary()
     Families=Family_dictionary()
-    errorType="US05"
-    error["US05"]={}
-    error["US05"]["error"] ="Marriage Occurs before death"
-    error["US05"]["IndividualIds"]=[]
+    
+    errorlog("US05","Marriage Occurs before death","Indi")
+    
     flag=True
     for family in Families:
         if Families[family]["Marriage_date"] > Individuals[Families[family]["Husb_id"]]["Death"]:
@@ -303,10 +307,9 @@ def MarriageBeforeDeath():
 
 #US-15 Fewer than 15 siblings
 def Checksiblings(): #Checks if the siblings are fewer than 15
-    errorType="US15"
-    error["US15"]={}
-    error["US15"]["error"] ="More than 15 siblings"
-    error["US15"]["Individuals"]=[]
+    
+    errorlog("US15","More than 15 siblings","Indi")
+    
 
     IndDict=Family_dictionary()
     IndDicti=SortDict(IndDict)
@@ -319,17 +322,16 @@ def Checksiblings(): #Checks if the siblings are fewer than 15
             flag=True
             
         else:
-            error["US15"]["Individuals"].append(individual)
+            error["US15"]["IndividualIds"].append(individual)
             
     return flag
 
 
 #US 14 check for less than 5 multiple births in family 
 def CheckMultipleBirths():
-    errorType="US14"
-    error["US14"]= {}
-    error["US14"]["error"]="Checking for less than 5 multiple births at a time"
-    error["US14"]["Individuals"]=[]
+    
+    errorlog("US14","Checking for less than 5 multiple births at a time","Indi")
+    
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     flag= True
@@ -347,9 +349,42 @@ def CheckMultipleBirths():
     return flag
 
 
-        
+#us08
+def BirthBeforeMarriageOfParents():
+    errorlog("US08","Checking for births before marriage of parents","Fam")
+    flag = True
+    fam = Family_dictionary()
+    indi = Individual_dictionary()
+    for key in fam:
+        child = fam[key]["children"]
+        for i in child:
+            if indi[i]["Birthdate"] < fam[key]["Marriage_date"]:
+                flag = False
+                error["US08"]["Family id"].append(key)
+            else:
+                pass 
+    return flag
 
-
+#US16
+def AllMaleNames():
+    errorlog("US16","Checking if all the males in the family has same last name","Fam")
+    flag = True
+    fam = Family_dictionary()
+    indi = Individual_dictionary()
+    for key in fam:
+        char = '/'
+        name = fam[key]["Husb_Name"]
+        last_name = name[name.find(char)+1 :]
+        child = fam[key]["children"]
+        for i in child:
+            if indi[i]["Gender"] == 'M':
+                name2 = indi[i]["Name"]
+                last_name2 = name2[name2.find(char)+1 :]
+                if last_name2 != last_name:
+                    error["US16"]["Family id"].append(key)
+                    flag = False
+                    break
+    return flag
 
 def print_error():
     CheckMarriageBeforeDivorce()
@@ -357,6 +392,8 @@ def print_error():
     BirthBeforeDeath()
     MarriageBeforeDeath()
     Checksiblings()
+    BirthBeforeMarriageOfParents()
+    AllMaleNames()
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
@@ -378,13 +415,31 @@ def print_error():
         if type=="US05":     
             for indID in error[type]["IndividualIds"]:
                 print("ERROR: FAMILY: US05: "+str(indID[1])+": Married "+str(FamDict[indID[1]]["Marriage_date"])+" after "+str(indID[2])+" ("+str(indID[0])+")"+" death on "+str(IndDict[indID[0]]["Death"]))
+        
+        if type == "US16":
+            for i in error[type]["Family id"]:
+                print("ERROR: Family: US16: "+str(i)+" Does not have all the Male member in the family with same last name")
 
+        if type == "US08":
+            list = error[type]["Family id"]
+            for i in list:
+                list1 = []
+                fam = FamDict[i]
+                for j in fam["children"]:
+                    if IndDict[j]["Birthdate"]<fam["Marriage_date"]:
+                        list1.append(j)
+                if len(list1)>0:
+                    print("ERROR: Family: US08: Childrens with id's "+str(list1)+" In family "+i+" have birth before marriage of parents")
+
+
+            
 def main():
     printTable()
     
     print_error()
     
-    
+
+
 if __name__== "__main__":
   main() 
 
