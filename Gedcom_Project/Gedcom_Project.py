@@ -4,6 +4,8 @@ import natsort
 from collections import OrderedDict
 import unittest
 
+import CombinedTesting
+
 filepath="GedcomFiles/AcceptanceTestFile.txt"
 error = {}
 def validity_check():
@@ -287,23 +289,25 @@ def BirthBeforeDeath():
             flag=False
     return flag
 
+
+def RefactorUS05(Families,Individuals,family,id,getId):
+    
+    if Families[family]["Marriage_date"] > Individuals[Families[family][id]]["Death"]:
+            error["US05"]["IndividualIds"].append([Families[family][id],family,getId[id]])
+    
 ## US05 Marriage before death
 def MarriageBeforeDeath():
     Individuals=Individual_dictionary()
     Families=Family_dictionary()
     
     errorlog("US05","Marriage Occurs before death","Indi")
+    getId={"Husb_id":"husband's","Wife_id":"wife's"}
     
     flag=True
     for family in Families:
-        if Families[family]["Marriage_date"] > Individuals[Families[family]["Husb_id"]]["Death"]:
-            error["US05"]["IndividualIds"].append([Families[family]["Husb_id"],family,"husband's"])
-            flag=False
-
-        if Families[family]["Marriage_date"] > Individuals[Families[family]["Wife_id"]]["Death"]:
-            error["US05"]["IndividualIds"].append([Families[family]["Wife_id"],family,"wife's"])
-            flag=False  
-    return flag
+        RefactorUS05(Families,Individuals,family,"Husb_id",getId)
+        RefactorUS05(Families,Individuals,family,"Wife_id",getId)  
+    return False if len(error["US05"]["IndividualIds"])>0 else True
 
 #US-15 Fewer than 15 siblings
 def Checksiblings(): #Checks if the siblings are fewer than 15
@@ -384,6 +388,29 @@ def checkSiblingsmarried():
 
 
 
+     
+        
+#US 17 No Marriages to children
+def NoMarriageChildren():
+    error["US17"]= {}
+    error["US17"]["error"]="No Marriages to children"
+    error["US17"]["Family"]={}
+    
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    flag= True
+    
+    for famID in FamDict:
+        childList=FamDict[famID]["children"]
+        for childID in childList:
+            for key in FamDict:
+               if FamDict[key]["Wife_id"]==FamDict[famID]["Wife_id"] and FamDict[key]["Husb_id"]==childID:
+                   error["US17"]["Family"][childID]="Husband is decendant of Spouse "+str(FamDict[famID]["Wife_id"])
+                   flag=False
+               if FamDict[key]["Husb_id"]==FamDict[famID]["Husb_id"] and FamDict[key]["Wife_id"]==childID:
+                   error["US17"]["Family"][childID]="Wife is decendant of Spouse "+str(FamDict[famID]["Husb_id"])
+                   flag=False
+    return flag
 
         
 
@@ -427,6 +454,54 @@ def AllMaleNames():
                     break
     return flag
 
+#US 19 First cousins should not marry one another
+def getchildList(childID,FamDict):
+    for famID in FamDict:
+        if childID==FamDict[famID]["Husb_id"] or childID==FamDict[famID]["Wife_id"]:
+            return FamDict[famID]["children"]
+    return []
+
+def SpousesList(grandchildID,FamDict):
+    tempList=list([])
+    for famID in FamDict:
+        if grandchildID==FamDict[famID]["Husb_id"]:
+            tempList.append(FamDict[famID]["Wife_id"])
+        if grandchildID==FamDict[famID]["Wife_id"]:
+            tempList.append(FamDict[famID]["Husb_id"])
+
+    return tempList
+
+def findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,FamDict,famID):
+    for grandchildspouse in grandChildrenSpouses:
+        for otherParent in childList:
+            if otherParent!=childID:
+                otherParentChildren=getchildList(otherParent,FamDict)
+                if grandchildspouse in otherParentChildren and grandchildspouse not in temp_list:
+                    error["US19"]["Family"].append(str(famID)+" Cannot marry between first cousins: " + str(grandchildspouse) + "," + str(grandchildID))
+                    temp_list.append(grandchildspouse)
+                    temp_list.append(grandchildID)
+    return temp_list 
+
+def FirstCousinsNoMarriageChildren():
+    
+    error["US19"]= {}
+    error["US19"]["error"]="First cousins should not marry one another"
+    error["US19"]["Family"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    temp_list=[]
+    for famID in FamDict:
+        childList=FamDict[famID]["children"]
+        for childID in childList:
+            grandChildren=getchildList(childID,FamDict)
+            if len(grandChildren)!=0:
+                for grandchildID in grandChildren:
+                    grandChildrenSpouses=SpousesList(grandchildID,FamDict)
+                    if len(grandChildrenSpouses)!=0 and grandchildID not in temp_list:
+                        temp_list=findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,FamDict,famID) 
+    return False if len(error["US19"]["Family"])==0 else True
+
+
 def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
@@ -440,10 +515,13 @@ def print_error():
     
     BirthBeforeMarriageOfParents()
     AllMaleNames()
+    NoMarriageChildren()
+    FirstCousinsNoMarriageChildren()
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
         if type=="US04":
+
             for famID in error[type]['Family id']:
                 print("ERROR: FAMILY: US04: "+str(famID)+":"+" Divorced "+str(FamDict[famID]["Divorce_date"])+" before marriage "+str(FamDict[famID]["Marriage_date"]))
         if type=="US06":
@@ -500,9 +578,11 @@ def main():
     printTable()
     
     print_error()
+    print(error)
     
 
 
 if __name__== "__main__":
   main() 
 
+  

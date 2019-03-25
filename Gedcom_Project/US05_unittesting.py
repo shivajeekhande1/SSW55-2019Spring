@@ -3,7 +3,7 @@ import Gedcom_Project
 
 class Test_test1(unittest.TestCase):
     
-    def test_One(self):
+    def test_A(self):
         Gedcom_Project.filepath = "GedcomFiles/SunilUS05TestFile.txt"
         Gedcom_Project.MarriageBeforeDeath()
         errorDict = Gedcom_Project.error["US05"]["IndividualIds"]
