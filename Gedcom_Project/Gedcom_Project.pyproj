@@ -38,8 +38,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="US06_unittesting.py" />
+    <Compile Include="US08_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="us14_unittesting.py" />
     <Compile Include="us15_unittesting.py" />
+    <Compile Include="US16_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
