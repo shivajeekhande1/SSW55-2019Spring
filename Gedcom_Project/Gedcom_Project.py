@@ -730,6 +730,17 @@ def print_error():
             if error["US22"]["Familyids"]!=0:
                 for us22F in  error["US22"]["Familyids"]:
                     print("ERROR: FAMILY: US22: "+us22F+" have duplicate ids")
+        
+        if type == "US23":
+            for i in error["US23"]["IndividualIds"]:
+                print("ERROR: Individuals: US23: Individuals with Id's "+i[0]+" and "+i[1]+" have same Names and Date of Births")
+        
+        if type == "US25":
+            for i in error["US25"]["Family id"]:
+                print("ERROR: Family: US25: In Family with ID "+i+" :Not all the first names are unique")
+
+
+
 
 def main():
     printTable()
