@@ -504,8 +504,41 @@ def FirstCousinsNoMarriageChildren():
 
 #US25
 def UniqueFirstNamesInFamily():
+    errorlog("US25","Checking if all the first names are unique in a family","Fam")
+    status = True
     famDict = Family_dictionary()
+    indDict = Individual_dictionary()
+    for i in famDict:
+        name = famDict[i]["Husb_Name"].split("/")[0]
+        if famDict[i]["Wife_Name"].split("/")[0] == name:
+            status = False
+            error["US25"]["Family id"].append(i)
+        else:
+            for j in famDict[i]["children"]:
+                if indDict[j]["Name"].split("/")[0] == name:
+                    status = False
+                    error["US25"]["Family id"].append(i)
+    return status
 
+#US23
+def UniqueNamesAndDob():
+    errorlog("US23","Checking if all individuals have unique names and Dob","Indi")
+    dict = {}
+    status = True
+    indiDict = Individual_dictionary()
+    for i in indiDict:
+        if indiDict[i]["Name"] in dict:
+            for j in dict[indiDict[i]["Name"]]:
+                if indiDict[i]["Birthdate"] == indiDict[j]["Birthdate"]:
+                    list = [i,j]
+                    error["US23"]["IndividualIds"].append(list)
+                    status = False
+            dict[indiDict[i]["Name"]].append(i)    
+                    
+        else:
+            dict[indiDict[i]["Name"]] = []
+            dict[indiDict[i]["Name"]].append(i)
+    return status
 
 #US24 Unique families by spouses
 def UniqueFamiliesSpouses():
@@ -618,6 +651,9 @@ def print_error():
     ListUpcomingBirthdays()
     uniqueIDs()
     checkrole()
+    UniqueFirstNamesInFamily()
+    UniqueNamesAndDob()
+
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:

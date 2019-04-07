@@ -10,9 +10,9 @@
 1 FAMS F01 
 0 NOTE define Pavan Telaga
 0 I01 INDI
-1 NAME Avinash /Telaga/ 
+1 NAME Bhanu /Telaga/ 
 1 BIRT
-2 DATE 03 MAR 1934 
+2 DATE 15 APR 1920 
 1 SEX M 
 1 FAMS F01 
 1 DEAT
