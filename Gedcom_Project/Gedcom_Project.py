@@ -168,6 +168,7 @@ def Family_dictionary():
                     dict[curr_id]["Husb_id"] = list[2]
                     dict[curr_id]["Husb_Name"] = Indi[list[2]]["Name"]
                 elif list[1] == "WIFE":
+
                     dict[curr_id]["Wife_id"] = list[2]
                     dict[curr_id]["Wife_Name"] = Indi[list[2]]["Name"]
                 elif list[1] == "MARR":
@@ -502,6 +503,32 @@ def FirstCousinsNoMarriageChildren():
     return True if len(error["US19"]["Family"])==0 else False
 
 
+#US24 Unique families by spouses
+def UniqueFamiliesSpouses():
+    errorlog("US24","Unique Families By Spouses","Fam")
+    flag = True
+    family = Family_dictionary()
+    dummyId=[]
+    for idOne in family:
+        for idTwo in family:
+            if idOne not in dummyId and idOne!=idTwo and family[idOne]["Husb_Name"]==family[idTwo]["Husb_Name"] and family[idOne]["Wife_Name"]==family[idTwo]["Wife_Name"] and family[idOne]["Marriage_date"]==family[idTwo]["Marriage_date"] :
+                flag= False
+                dummyId.append(idTwo)
+                error["US24"]["Family id"].append([idOne , idTwo])
+
+    return flag
+
+#US38 List upcoming birthdays
+def ListUpcomingBirthdays():
+    errorlog("US38","List upcoming birthdays","Indi")
+    individual=Individual_dictionary()
+    PresentDate = datetime.today()  
+    for indId in individual:
+        birthday = datetime.strptime(individual[indId]["Birthdate"], '%Y-%m-%d')
+        if (birthday-PresentDate).days <=30 and birthday>PresentDate:
+            error["US38"]["IndividualIds"].append(indId)
+    return False if len(error["US38"]["IndividualIds"])==0 else True
+
 def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
@@ -517,6 +544,8 @@ def print_error():
     AllMaleNames()
     NoMarriageChildren()
     FirstCousinsNoMarriageChildren()
+    UniqueFamiliesSpouses()
+    ListUpcomingBirthdays()
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
