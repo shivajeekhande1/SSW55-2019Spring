@@ -501,6 +501,10 @@ def FirstCousinsNoMarriageChildren():
                         temp_list=findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,FamDict,famID) 
     return True if len(error["US19"]["Family"])==0 else False
 
+#US25
+def UniqueFirstNamesInFamily():
+    famDict = Family_dictionary()
+
 
 def print_error():
     CheckMarriageBeforeDivorce()
