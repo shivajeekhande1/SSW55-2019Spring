@@ -9,7 +9,14 @@ from us14_unittesting import Testus14 as US14Testing
 from us15_unittesting import Testus15 as US15Testing
 from US04_unittesting import Test_US04_unittesting as US04Testing
 from US17_unittesting import US17_test as US17Testing
-
+from US18_unittesting import Testus18 as US18Testing
+from US19_unittesting import Test_test1 as US19Testing
+from US21_unittesting import Test_US21_unittesting as US21Testing
+from US22_unittesting import Test_US21_unittesting as US22Testing
+from US23_unittesting import Test_US23_unittesting as US23Testing
+from US24_unittesting import US24_test as US24Testing
+from US25_unittesting import Test_US25_unittesting as US25Testing
+from US38_unittesting import US38_test as US38Testing
 
 US05=unittest.TestLoader().loadTestsFromTestCase(US05Testing)
 US06=unittest.TestLoader().loadTestsFromTestCase(US06Testing)
@@ -20,7 +27,15 @@ US19=unittest.TestLoader().loadTestsFromTestCase(US19Testing)
 US14=unittest.TestLoader().loadTestsFromTestCase(US14Testing)
 US15=unittest.TestLoader().loadTestsFromTestCase(US15Testing)
 US04=unittest.TestLoader().loadTestsFromTestCase(US04Testing)
-US17=unittest.TestLoader().loadTestsFromTestCase(US14Testing)
+US17=unittest.TestLoader().loadTestsFromTestCase(US17Testing)
+US18=unittest.TestLoader().loadTestsFromTestCase(US18Testing)
+US19=unittest.TestLoader().loadTestsFromTestCase(US19Testing)
+US21=unittest.TestLoader().loadTestsFromTestCase(US21Testing)
+US22=unittest.TestLoader().loadTestsFromTestCase(US22Testing)
+US23=unittest.TestLoader().loadTestsFromTestCase(US23Testing)
+US24=unittest.TestLoader().loadTestsFromTestCase(US24Testing)
+US25=unittest.TestLoader().loadTestsFromTestCase(US25Testing)
+US38=unittest.TestLoader().loadTestsFromTestCase(US38Testing)
 
 class Test_CombinedTesting(unittest.TestCase):
     def test_A(self):
