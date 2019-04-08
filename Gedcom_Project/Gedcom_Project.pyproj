@@ -51,6 +51,8 @@
     <Compile Include="US16_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="US21_unittesting.py" />
+    <Compile Include="US22_unittesting.py" />
     <Compile Include="US23_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
