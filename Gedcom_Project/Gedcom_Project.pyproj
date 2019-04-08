@@ -54,7 +54,13 @@
     <Compile Include="US23_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="US24_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="US25_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="US38_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

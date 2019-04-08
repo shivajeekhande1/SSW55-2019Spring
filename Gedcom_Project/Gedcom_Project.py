@@ -551,7 +551,7 @@ def UniqueFamiliesSpouses():
             if idOne not in dummyId and idOne!=idTwo and family[idOne]["Husb_Name"]==family[idTwo]["Husb_Name"] and family[idOne]["Wife_Name"]==family[idTwo]["Wife_Name"] and family[idOne]["Marriage_date"]==family[idTwo]["Marriage_date"] :
                 flag= False
                 dummyId.append(idTwo)
-                error["US24"]["Family id"].append([idOne , idTwo])
+                error["US24"]["Family id"].append([idOne,idTwo])
 
     return flag
 
@@ -738,9 +738,12 @@ def print_error():
         if type == "US25":
             for i in error["US25"]["Family id"]:
                 print("ERROR: Family: US25: In Family with ID "+i+" :Not all the first names are unique")
-
-
-
+        if type=="US24":
+            for i in error["US24"]["Family id"]:
+                print("ERROR: Family: US24: "+" The Family "+i[0]+" have identical spouses & have same marrigae date with Family "+i[1])
+        if type=="US38":
+            for i in error["US38"]["IndividualIds"]:
+                print("UPDATE: Individual: US38: "+"The individual "+i+" has upcoming birthday in the next 30 days.")
 
 def main():
     printTable()
