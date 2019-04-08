@@ -502,6 +502,43 @@ def FirstCousinsNoMarriageChildren():
                         temp_list=findUS19Error(grandChildrenSpouses,childList,grandchildID,temp_list,childID,FamDict,famID) 
     return True if len(error["US19"]["Family"])==0 else False
 
+#US25
+def UniqueFirstNamesInFamily():
+    errorlog("US25","Checking if all the first names are unique in a family","Fam")
+    status = True
+    famDict = Family_dictionary()
+    indDict = Individual_dictionary()
+    for i in famDict:
+        name = famDict[i]["Husb_Name"].split("/")[0]
+        if famDict[i]["Wife_Name"].split("/")[0] == name:
+            status = False
+            error["US25"]["Family id"].append(i)
+        else:
+            for j in famDict[i]["children"]:
+                if indDict[j]["Name"].split("/")[0] == name:
+                    status = False
+                    error["US25"]["Family id"].append(i)
+    return status
+
+#US23
+def UniqueNamesAndDob():
+    errorlog("US23","Checking if all individuals have unique names and Dob","Indi")
+    dict = {}
+    status = True
+    indiDict = Individual_dictionary()
+    for i in indiDict:
+        if indiDict[i]["Name"] in dict:
+            for j in dict[indiDict[i]["Name"]]:
+                if indiDict[i]["Birthdate"] == indiDict[j]["Birthdate"]:
+                    list = [i,j]
+                    error["US23"]["IndividualIds"].append(list)
+                    status = False
+            dict[indiDict[i]["Name"]].append(i)    
+                    
+        else:
+            dict[indiDict[i]["Name"]] = []
+            dict[indiDict[i]["Name"]].append(i)
+    return status
 
 #US24 Unique families by spouses
 def UniqueFamiliesSpouses():
@@ -529,6 +566,72 @@ def ListUpcomingBirthdays():
             error["US38"]["IndividualIds"].append(indId)
     return False if len(error["US38"]["IndividualIds"])==0 else True
 
+
+
+
+#US21 check gender role of spouses in familes
+def checkrole():
+    error["US21"]={}
+    error["US21"]["error"] ="Check gender for role"
+    error["US21"]["Family"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    
+    flag=True
+    for key in IndDict:
+        if(IndDict[key]['Spouse']!='NA'):
+            curr=key
+            if(IndDict[key]['Gender']=='F'):
+                for i in FamDict:
+                    if(curr in FamDict[i]['Husb_id']):
+                        error["US21"]["Family"].append([i,key])
+                        flag=False
+            if(IndDict[key]['Gender']=='M'):
+                for i in FamDict:
+                    if(curr in FamDict[i]['Wife_id']):
+                        error["US21"]["Family"].append([i,key])
+                        flag=False
+    return flag
+
+
+
+#US22 All individual ids and Family ids should be unique
+
+def uniqueIDs():
+    error["US22"]={}
+    error["US22"]["error"] ="check for unique Ids"
+    error["US22"]["Individuals"]=[]
+    error["US22"]["Familyids"]=[]
+    flag=True
+    
+    f=open(filepath,"r")
+    dummy_Indi=[]
+    dumy_Fami=[]
+    for line in f:
+        try:
+            line_words = line.split()
+            if line_words[0]=="0" and len(line_words)>=3 and line_words[2]=='INDI':
+                if line_words[1] not in dummy_Indi:
+                    dummy_Indi.append(line_words[1])
+                else:
+                    if line_words[1] not in error["US22"]["Individuals"]:
+                        error["US22"]["Individuals"].append(line_words[1])
+                        flag=False
+            if line_words[0]=="0" and len(line_words)>=3 and line_words[2]=='FAM':
+                if line_words[1] not in dumy_Fami:
+                    dumy_Fami.append(line_words[1])
+                else:
+                    if line_words[1] not in error["US22"]["Familyids"]:
+                        error["US22"]["Familyids"].append(line_words[1]) 
+                        flag=False
+        except:
+            pass
+    f.close()
+    return flag
+
+
+
+
 def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
@@ -546,6 +649,11 @@ def print_error():
     FirstCousinsNoMarriageChildren()
     UniqueFamiliesSpouses()
     ListUpcomingBirthdays()
+    uniqueIDs()
+    checkrole()
+    UniqueFirstNamesInFamily()
+    UniqueNamesAndDob()
+
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
@@ -610,6 +718,29 @@ def print_error():
         if type=="US19":
             for us19 in error[type]["Family"]:
                 print("ERROR: Family: US19: "+us19)
+
+        if type=="US21":
+            for us21 in error[type]["Family"]:
+                print("ERROR: FAMILY: US21: This person "+us21[1]+" is not assigned with the correct role in the Family "+us21[0])
+        
+        if type=="US22":
+            if len(error["US22"]["Individuals"])!=0:
+                for us22I in error["US22"]["Individuals"]:
+                    print("ERROR: Individual: US22: "+us22I+" have duplicate ids")
+            if error["US22"]["Familyids"]!=0:
+                for us22F in  error["US22"]["Familyids"]:
+                    print("ERROR: FAMILY: US22: "+us22F+" have duplicate ids")
+        
+        if type == "US23":
+            for i in error["US23"]["IndividualIds"]:
+                print("ERROR: Individuals: US23: Individuals with Id's "+i[0]+" and "+i[1]+" have same Names and Date of Births")
+        
+        if type == "US25":
+            for i in error["US25"]["Family id"]:
+                print("ERROR: Family: US25: In Family with ID "+i+" :Not all the first names are unique")
+
+
+
 
 def main():
     printTable()
