@@ -39,7 +39,7 @@ US38=unittest.TestLoader().loadTestsFromTestCase(US38Testing)
 
 class Test_CombinedTesting(unittest.TestCase):
     def test_A(self):
-        TestSuite=unittest.TestSuite([US05,US06,US03,US03,US08,US16,US19,US14,US15,US04,US17])
+        TestSuite=unittest.TestSuite([US05,US06,US03,US08,US16,US19,US14,US15,US04,US17,US18,US19,US21,US22,US23,US24,US25,US38])
 
 if __name__ == '__main__':
     unittest.main()
