@@ -629,6 +629,20 @@ def uniqueIDs():
     f.close()
     return flag
 
+#us29
+def ListDeceased():
+    errorlog("US29","List all Deaceased","Indi")
+    list = []
+    indi = Individual_dictionary()
+    for i in indi:
+        if indi[i]["Death"] != "NA":
+            list.append(i)
+    error["US29"]["IndividualIds"] = list
+    
+    if len(list)>0:
+        return True
+    else:
+        return False
 #US 26 Corresponding entries
 
 def CorrespondingEntries():
@@ -666,7 +680,29 @@ def CorrespondingEntries():
     return True if len(error["US26"]["child"])==0 and len(error["US26"]["spouse"])==0 else False 
 
 
-#US31 Living Single
+#us30
+def ListLivingMarried():
+    errorlog("US30","List living and married","Indi")
+    list = []
+    indi = Individual_dictionary()
+    fam = Family_dictionary()
+    for key in indi:
+        if indi[key]["Death"] == "NA" and indi[key]["Spouse"]!="NA":
+            for i in indi[key]["Spouse"]:
+                if i in fam:
+                    if indi[key]["Gender"]=="M":
+                        if fam[i]["Divorce_date"] =="NA" and indi[fam[i]["Wife_id"]]["Death"] =="NA":
+                            
+                            list.append(key)
+                    else:
+                        if fam[i]["Divorce_date"] =="NA" and indi[fam[i]["Husb_id"]]["Death"] =="NA":
+                            list.append(key)
+    error["US30"]["IndividualIds"] = list
+    
+    if len(list)>0:
+        return True
+    else:
+        return False
 
 def LivingSingle():
     error["US31"]={}
@@ -709,6 +745,10 @@ def print_error():
     checkrole()
     UniqueFirstNamesInFamily()
     UniqueNamesAndDob()
+
+    ListDeceased()
+    ListLivingMarried()
+
     CorrespondingEntries()
     LivingSingle()
     IndDict=Individual_dictionary()
@@ -801,6 +841,12 @@ def print_error():
         if type=="US38":
             for i in error["US38"]["IndividualIds"]:
                 print("UPDATE: Individual: US38: "+"The individual "+i+" has upcoming birthday in the next 30 days.")
+        if type == "US29":
+            for i in error["US29"]["IndividualIds"]:
+                print("UPDATE: Individual: US29: The Individual with Id "+i+" is Deaceased")
+        if type == "US30":
+            for i in error["US30"]["IndividualIds"]:
+                print("UPDATE: Individual: US30: The Individual with ID "+i+" is living and married")
         if type=="US26":
             for i in error["US26"]["child"]:
                 print("ERROR: US38: "+i)
