@@ -629,9 +629,65 @@ def uniqueIDs():
     f.close()
     return flag
 
+#US 26 Corresponding entries
+
+def CorrespondingEntries():
+    error["US26"]={}
+    error["US26"]["error"] ="Corresponding entries"
+    error["US26"]["child"]=[]
+    error["US26"]["spouse"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+
+    for key in IndDict:
+
+        if(IndDict[key]['Child']!='NA'):
+            if key not in FamDict[IndDict[key]['Child'][0]]['children']:
+                error["US26"]["child"].append("Individual: "+key+" child entry is missing in "+IndDict[key]['Child'][0]+" family" )
+        if(IndDict[key]['Spouse']!='NA'):
+            for sFid in IndDict[key]['Spouse']:
+                if IndDict[key]['Gender']=='M' and key==FamDict[sFid]['Wife_id']:
+                   error["US26"]["spouse"].append("Individual: "+key+" is misgendered as Female in "+sFid+" family" )
+
+                if key==FamDict[sFid]['Husb_id'] and IndDict[key]['Gender']=='F':
+                   error["US26"]["spouse"].append("Individual: "+key+" is misgendered as male in "+sFid+" family" )
+    
+                if key!=FamDict[sFid]['Husb_id'] and key!=FamDict[sFid]['Wife_id']:
+                    error["US26"]["spouse"].append("Individual: "+key+" spouse details are missing in "+sFid+" family" )
+    for fId in FamDict:
+
+        if fId not in IndDict[FamDict[fId]['Wife_id']]['Spouse']:
+            error["US26"]["spouse"].append("Family: "+fId+" with spouse "+FamDict[fId]['Wife_id']+ " is missing in Individual records" )
+        if fId not in IndDict[FamDict[fId]['Husb_id']]['Spouse']:
+            error["US26"]["spouse"].append("Family: "+fId+" with spouse "+FamDict[fId]['Husb_id']+ " is missing in Individual records" )
+        for childId in FamDict[fId]['children']:
+            if fId not in IndDict[childId]["Child"]:
+                error["US26"]["child"].append("Family: "+fId+" is missing child entry "+childId+ "'s individual record" )
+    return True if len(error["US26"]["child"])==0 and len(error["US26"]["spouse"])==0 else False 
 
 
+#US31 Living Single
 
+def LivingSingle():
+    error["US31"]={}
+    error["US31"]["error"] ="check for unique Ids"
+    error["US31"]["Individuals"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+
+    tempDict=[]
+    flag=False
+    for fId in FamDict:
+
+        if FamDict[fId]['Husb_id'] not in tempDict:
+            tempDict.append(FamDict[fId]['Husb_id'])
+        if FamDict[fId]['Wife_id'] not in tempDict:
+            tempDict.append(FamDict[fId]['Wife_id'])
+    for indId in IndDict:
+        if indId not in tempDict and IndDict[indId]['Age']>30 and IndDict[indId]['Death']=='NA':
+            error["US31"]["Individuals"].append(indId)
+            flag=True
+    return flag
 def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
@@ -653,7 +709,8 @@ def print_error():
     checkrole()
     UniqueFirstNamesInFamily()
     UniqueNamesAndDob()
-
+    CorrespondingEntries()
+    LivingSingle()
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
@@ -744,6 +801,15 @@ def print_error():
         if type=="US38":
             for i in error["US38"]["IndividualIds"]:
                 print("UPDATE: Individual: US38: "+"The individual "+i+" has upcoming birthday in the next 30 days.")
+        if type=="US26":
+            for i in error["US26"]["child"]:
+                print("ERROR: US38: "+i)
+            for i in error["US26"]["spouse"]:
+                print("ERROR: US38: "+i)
+        if type=="US31":
+            for i in error["US31"]["Individuals"]:
+                print("UPDATE: Individual: US31: "+"The individual "+i+" is a living single with age more than 30")
+     
 
 def main():
     printTable()
