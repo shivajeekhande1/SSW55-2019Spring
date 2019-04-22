@@ -6,7 +6,8 @@ import unittest
 
 import CombinedTesting
 
-filepath="GedcomFiles/AcceptanceTestFile.txt"
+filepath="C:/Users/eshwa/OneDrive/Desktop/CS 555/Gedcom Project/SSW555-2019Spring/SSW555-2019Spring-1/Gedcom_Project/GedcomFiles/AcceptanceTestFile.txt"
+
 error = {}
 def validity_check():
     tags={'0':['NOTE','HEAD','TRLR'],'1':['SEX','BIRT','DEAT','NAME','FAMC','FAMS','HUSB','WIFE','MARR','CHIL','DIV'],'2':['DATE']}
@@ -924,6 +925,8 @@ def print_error():
         if type=="US01":
             for i in error["US01"]["IndividualIds"]:
                 print("ERROR: US01 These individuals has incorrect dates"+i)
+            for j in error["US01"]["FamilyIds"]:
+                print("ERROR: US01 These are the families of individuals with incorrect dates"+j)
 
         if type=="US33":
             for i in error["US33"]["IndividualIds"]:
