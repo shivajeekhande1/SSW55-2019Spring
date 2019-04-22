@@ -724,6 +724,68 @@ def LivingSingle():
             error["US31"]["Individuals"].append(indId)
             flag=True
     return flag
+
+
+#US01 Dates before current date 
+def datecheck():
+    errorType="US01"
+    error["US01"]={}
+    error["US01"]["error"] ="Checking dates of individual"
+    error["US01"]["IndividualIds"]=[]
+    error["US01"]["Familyids"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    
+    flag= True
+    d1=datetime.today()
+    
+    for key in IndDict:
+        b_date=datetime.strptime(IndDict[key]['Birthdate'],'%Y-%m-%d')
+        if(b_date>d1):
+            flag=False
+            error["US01"]["IndividualIds"].append(key)
+            
+        if(IndDict[key]['Death']!= 'NA'):
+            d_date=datetime.strptime(IndDict[key]['Death'],'%Y-%m-%d')
+            if(d_date>d1):
+                flag=False
+                error["US01"]["IndividualIds"].append(key)
+    
+    for key in FamDict:
+                
+        if(FamDict[key]['Marriage_date']!='NA'):
+            m_date=datetime.strptime(FamDict[key]['Marriage_date'],'%Y-%m-%d')
+            if(m_date>d1):
+                flag=False
+                error["US01"]["Familyids"].append(key)
+                
+        if(FamDict[key]['Divorce_date']!='NA'):
+            di_date=datetime.strptime(FamDict[key]['Divorce_date'],'%Y-%m-%d')
+            if(di_date>d1):
+                flag=False
+                error["US01"]["Familyids"].append(key)
+                
+    return flag
+
+#US33 list orphans 
+def listorphans():
+    errorType="US33"
+    error["US33"]={}
+    error["US33"]["error"] ="List all the orphans"
+    error["US33"]["Individuals"]=[]
+    IndDict=Individual_dictionary()
+    FamDict=Family_dictionary()
+    
+    flag=True
+    for key in FamDict:
+        if IndDict[FamDict[key]["Husb_id"]]['Death']!='NA' and IndDict[FamDict[key]["Wife_id"]]['Death']!='NA':
+            for child_id in FamDict[key]["children"]:
+                if(IndDict[child_id]["Age"]<18):
+                    error["US33"]["IndividualIds"].append(key)
+                    flag=False
+    return flag
+
+
 def print_error():
     CheckMarriageBeforeDivorce()
     CheckDivorceBeforeDeath()
@@ -751,6 +813,9 @@ def print_error():
 
     CorrespondingEntries()
     LivingSingle()
+    listorphans()
+    datecheck()
+
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     for type in error:
@@ -855,6 +920,14 @@ def print_error():
         if type=="US31":
             for i in error["US31"]["Individuals"]:
                 print("UPDATE: Individual: US31: "+"The individual "+i+" is a living single with age more than 30")
+
+        if type=="US01":
+            for i in error["US01"]["IndividualIds"]:
+                print("ERROR: US01 These individuals has incorrect dates"+i)
+
+        if type=="US33":
+            for i in error["US33"]["IndividualIds"]:
+                print("ERROR: US33 These are the list of orphans"+i)
      
 
 def main():
