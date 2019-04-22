@@ -1,10 +1,11 @@
 import unittest
+import Gedcom_Project
 
 class Test_US30_unittesting(unittest.TestCase):
     def test_A(self):
         Gedcom_Project.ListLivingMarried()
         errorDict = Gedcom_Project.error["US30"]["IndividualIds"]
-        self.assertEqual(len(errorDict),6)
+        self.assertEqual(len(errorDict),8)
     
     def test_B(self):
         self.assertTrue(Gedcom_Project.ListDeceased())
