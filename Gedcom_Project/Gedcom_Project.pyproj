@@ -25,6 +25,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gedcom_Project.py" />
+    <Compile Include="us01_unittesting.py" />
     <Compile Include="US05_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
@@ -68,6 +69,13 @@
     <Compile Include="US30_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="US26_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="US31_unittesting.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="us33_unittesting.py" />
     <Compile Include="US38_unittesting.py">
       <SubType>Code</SubType>
     </Compile>
