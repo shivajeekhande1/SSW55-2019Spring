@@ -6,7 +6,7 @@ import unittest
 
 import CombinedTesting
 
-filepath="C:/Users/eshwa/OneDrive/Desktop/CS 555/Gedcom Project/SSW555-2019Spring/SSW555-2019Spring-1/Gedcom_Project/GedcomFiles/AcceptanceTestFile.txt"
+filepath="GedcomFiles/AcceptanceTestFile.txt"
 
 error = {}
 def validity_check():
@@ -773,7 +773,7 @@ def listorphans():
     errorType="US33"
     error["US33"]={}
     error["US33"]["error"] ="List all the orphans"
-    error["US33"]["Individuals"]=[]
+    error["US33"]["IndividualIds"]=[]
     IndDict=Individual_dictionary()
     FamDict=Family_dictionary()
     
@@ -924,13 +924,13 @@ def print_error():
 
         if type=="US01":
             for i in error["US01"]["IndividualIds"]:
-                print("ERROR: US01 These individuals has incorrect dates"+i)
-            for j in error["US01"]["FamilyIds"]:
-                print("ERROR: US01 These are the families of individuals with incorrect dates"+j)
+                print("ERROR: US01: The individual "+i+" has incorrect dates")
+            for j in error["US01"]["Familyids"]:
+                print("ERROR: US01 The familiy "+j+" have incorrect dates")
 
         if type=="US33":
             for i in error["US33"]["IndividualIds"]:
-                print("ERROR: US33 These are the list of orphans"+i)
+                print("ERROR: US33 The Individual "+i+ " is an orphan")
      
 
 def main():
